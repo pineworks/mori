@@ -1,4 +1,5 @@
 language: ruby
+services: postgresql
 script: "bundle exec rake test"
 before_install:
   - gem install bundler -v '>= 1.5.1'
@@ -10,3 +11,7 @@ gemfile:
   - Gemfile
 notifications:
   email: false
+before_script:
+  - psql -c 'create database myapp_test;' -U postgres
+cache:
+  bundler: true
