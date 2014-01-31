@@ -1,0 +1,17 @@
+en:
+  mori_mailer:
+    confirm_email:
+      opening:
+        "Welcome to %{application_name}"
+      intro:
+        "Please note that some actions will require you to have a confirmed email. Follow the link below to confirm your email"
+      closing:
+        "If you didn't sign up for %{application_name}, please ignore this email"
+    invitation_email:
+      opening:
+        "You've been invited to %{application_name}"
+      intro:
+        "Follow the link below to accept the invitation"
+      closing:
+        "If you don't wish to accept the invitation to %{application_name}, simply ignore this email"
+
