@@ -1,6 +1,6 @@
 language: ruby
 services: postgresql
-script: "bundle exec rake test"
+script: "bundle exec rspec spec"
 before_install:
   - gem install bundler -v '>= 1.5.1'
 rvm:
