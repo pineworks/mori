@@ -12,7 +12,7 @@ gemfile:
 notifications:
   email: false
 before_script:
-  - cp config/database.travis.yml config/database.yml
+  - cp config/database.travis.yml spec/dummy/config/database.yml
   - psql -c 'create database mori_test' -U postgres
 script:
   - RAILS_ENV=test bundle exec rake db:migrate --trace
