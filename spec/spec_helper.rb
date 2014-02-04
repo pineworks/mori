@@ -13,6 +13,10 @@ require 'shoulda-matchers'
 require 'timecop'
 require 'bcrypt'
 
+# Coveralls!
+require 'coveralls'
+Coveralls.wear!
+
 Rails.backtrace_cleaner.remove_silencers!
 
 # Load support files
