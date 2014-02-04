@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.name        = "mori"
   s.version     = Mori::VERSION
   s.authors     = ["Aaron Miler"]
-  s.email       = ["aaron@aaronmiler.com"]
+  s.email       = ["aaron@pineworks.com"]
   s.homepage    = "http://github.com/pineworks/mori"
   s.summary     = "TODO: Summary of Mori."
   s.description = "TODO: Description of Mori."

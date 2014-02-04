@@ -3,6 +3,9 @@ services: postgresql
 script: "bundle exec rspec spec"
 before_install:
   - gem install bundler -v '>= 1.5.1'
+  - RAILS_ENV=test bundle exec rake db:migrate --trace
+  - bundle exec rake db:test:prepare
+  - bundle exec rake
 rvm:
   - 1.9.3
   - 2.0.0
@@ -12,6 +15,7 @@ gemfile:
 notifications:
   email: false
 before_script:
-  - psql -c 'create database myapp_test;' -U postgres
+  - cp config/database.travis.yml config/database.yml
+  - psql -c 'create database mori_test' -U postgres
 cache:
   bundler: true
