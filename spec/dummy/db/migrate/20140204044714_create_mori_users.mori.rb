@@ -1,8 +1,9 @@
-class CreateUsers < ActiveRecord::Migration
+# This migration comes from mori (originally 20140128055658)
+class CreateMoriUsers < ActiveRecord::Migration
   def change
-    create_table :users do |t|
+    create_table :mori_users do |t|
 
-      t.string :email, :null => false
+      t.string :email
       t.text :password
 
       # Invite Related
@@ -15,7 +16,11 @@ class CreateUsers < ActiveRecord::Migration
 
       # Confirmable
       t.boolean :confirmed
+      t.string :confirmation_token
       t.datetime :confirmation_sent
+
+      # Group Relation
+      t.integer :group_id
 
       # Application specific attributes
       t.hstore :data, :default => {}
@@ -23,6 +28,7 @@ class CreateUsers < ActiveRecord::Migration
       t.timestamps
 
     end
-    add_index :users, :email
+    add_index :mori_users, :email
+    add_index :mori_users, :group_id
   end
 end

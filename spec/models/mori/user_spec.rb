@@ -2,10 +2,15 @@ require 'spec_helper'
 
 module Mori
   describe User do
+    
+    let(:password){"imapassword"}
+    let(:password2){"imtheotherpassword"}
+    let(:email){"theemail@theexample.com"}
 
     #########################################
     # User Validation
     #########################################
+    
     describe "is Valid: it" do
       it {should validate_presence_of(:email)}
       it {should validate_uniqueness_of(:email)}
@@ -26,7 +31,6 @@ module Mori
         build(:mori_minimal_user).valid?.should be true
         build(:mori_invited_user).valid?.should be true
       end
-
     end
 
     #########################################
@@ -41,11 +45,12 @@ module Mori
         user.password.to_s.should_not eq password_before
       end
       it "should normalize the email" do
-        user = build(:mori_minimal_user, email: 'EMAIL@exaMpLE.com') 
+        user = build(:mori_minimal_user, email: 'E MAIL@exa MpLE.com') 
         before_email = user.email
-        user.save
-        user.email.should_not eq before_email
-        user.email.should eq before_email.normalize
+        if user.save
+          user.email.should eq "email@example.com"
+          user.email.should_not eq before_email
+        end
       end
     end
 
@@ -62,8 +67,8 @@ module Mori
     #########################################
     describe "Inviting a User" do
       before :each do
-        User.invite('aaron@aaronmiler.com')
-        @user = User.find_by_email('aaron@aaronmiler.com')
+        User.invite(email)
+        @user = User.find_by_email(email)
       end
       it "should be invitable" do
         @user.should_not be nil
@@ -71,21 +76,20 @@ module Mori
       end
       describe "accepting the invitation" do
         before :each do
-          User.invite('aaron@aaronmiler.com')
-          @user = User.find_by_email('aaron@aaronmiler.com')
+          User.invite(email)
+          @user = User.find_by_email(email)
         end
         it "should set their password" do
-          user = @user.accept_invitation(@user.invitation_token,"myPassword123")
-          user.password.to_s.should_not eq "myPassword123"
-          ::BCrypt::Password.new(user.password.to_s).should eq "myPassword123"
+          user = @user.accept_invitation(@user.invitation_token,password)
+          user.password.to_s.should_not eq password
+          user.password.should eq password
         end
         it "should not be able to use a stale token" do
           Timecop.freeze(Date.today + 3.weeks) do
-            expect{@user.accept_invitation(@user.invitation_token,"mypassword123") }.to raise_error
+            expect{@user.accept_invitation(@user.invitation_token,password)}.to raise_error
           end
         end
       end
-      pending "should receive an invitation email"
     end
 
     #########################################
@@ -102,18 +106,15 @@ module Mori
         @user.password_reset_sent.should eq Date.today
       end
       it "should require a valid reset token" do
-        expect {@user.reset_password('token123','newPassword')}.to raise_error
+        expect {@user.reset_password('token123',password)}.to raise_error
         token = @user.password_reset_token 
-        @user.reset_password(token, 'newPassword').password.should eq 'newPassword'
+        @user.reset_password(token, password).password.should eq password
       end
       it "should not be able to use an old token" do
         token = @user.password_reset_token
         ::Timecop.freeze(Date.today + 3.weeks) do
-        expect {@user.reset_password(token,'newpassword')}.to raise_error
+          expect {@user.reset_password(token, password)}.to raise_error
         end
-      end
-      it "should receive a password reset email" do
-        pending
       end
     end
 
@@ -125,16 +126,77 @@ module Mori
       before :each do
         @user = create(:mori_minimal_user)
       end
-
       it "should be able to change their password" do
-        newpassword = "password13"
-        User.change_password(@user.email,"123456789sdf",newpassword)
-        ::BCrypt::Password.new(User.find_by_email(@user.email).password).should eq newpassword
+        User.change_password(@user.email,"123456789sdf",password2)
+        ::BCrypt::Password.new(User.find_by_email(@user.email).password).should eq password2
       end
       it "should raise an error if the incorrect password is provided" do
-        expect{ User.change_password(@user.email,"I'mapassword","newpass")}.to raise_error
+        expect{ User.change_password(@user.email,password2,password)}.to raise_error
       end
     end
 
+    #########################################
+    # Confirming Their Email
+    #########################################
+    
+    describe "confirming their email" do
+      before :each do
+        @user = create(:mori_minimal_user)
+      end
+      it "should require a valid token" do
+        expect{User.confirm_email(@user.email, "tokentoken123")}.to raise_error
+      end
+      it "should require the token to be recent" do
+        token = @user.confirmation_token
+        ::Timecop.freeze(Date.today + 3.weeks) do
+          expect {User.confirm_email(@user.email, token)}.to raise_error
+        end
+      end
+      it "should set confirmed to true" do
+        user = User.confirm_email(@user.email, @user.confirmation_token)
+        user.confirmed.should eq true
+      end
+    end
+    #########################################
+    # Emails sent from the model
+    #########################################
+    
+    describe "should recieve an email for" do
+      it "getting invited" do
+        Mailer.stub(:invite_user)
+        Mailer.should_receive(:invite_user)
+        User.invite(email)
+      end
+      it "resetting their password" do
+        user = create(:mori_minimal_user)
+        Mailer.stub(:password_reset_notification)
+        Mailer.should_receive(:password_reset_notification)
+        User.forgot_password(user.email)
+      end
+      it "confirming their email" do
+        Mailer.stub(:confirm_email)
+        Mailer.should_receive(:confirm_email)
+        user = create(:mori_minimal_user)
+      end
+    end
+
+    #########################################
+    # Authentication
+    #########################################
+
+    describe "logging in" do
+      before :each do
+        @user = create(:mori_minimal_user, :password => password)
+      end
+      it "should be able to authenticate with their credentials" do
+        User.authenticate(@user.email, password).should be_an_instance_of User
+      end
+      it "should raise an error if password is incorrect" do
+        expect{User.authenticate(@user.email, password2) }.to raise_error
+      end
+      it "should raise an error if no user is found" do
+        expect{User.authenticate(email, password) }.to raise_error
+      end
+    end
   end
 end

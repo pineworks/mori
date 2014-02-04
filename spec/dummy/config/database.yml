@@ -10,7 +10,7 @@ test:
   encoding: unicode
   database: dummy_test
   pool: 5
-  username: postgres
+  username: AaronMiler
 
 production:
   adapter: postgresql

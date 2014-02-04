@@ -33,4 +33,13 @@ Dummy::Application.configure do
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
+
+  config.action_mailer.delivery_method = :smtp
+	config.action_mailer.smtp_settings = {
+	  :user_name => 'mori-testing-364feabf2cb083a6',
+	  :password => 'b684e506eb5afae5',
+	  :address => 'mailtrap.io',
+	  :port => '2525',
+	  :authentication => :plain
+	}
 end

@@ -7,9 +7,11 @@ require File.expand_path("../dummy/config/environment.rb",  __FILE__)
 
 require 'rspec/rails'
 require 'rspec/autorun'
+require 'mailer_matcher'
 require 'factory_girl_rails'
 require 'shoulda-matchers'
 require 'timecop'
+require 'bcrypt'
 
 Rails.backtrace_cleaner.remove_silencers!
 

@@ -1,8 +1,10 @@
+require 'bcrypt'
+
 class String
-  require 'bcrypt'
+  include BCrypt
 
   def encrypt
-    ::BCrypt::Password.create(self, :cost => cost)
+    Password.create(self, :cost => cost)
   end
   def normalize
     self.remove_whitespace.downcase
