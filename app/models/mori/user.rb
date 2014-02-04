@@ -55,7 +55,7 @@ module Mori
       user.save
     end
     def self.change_password(email, password, new_password)
-      user = User.find_by_email(email.normalize)
+      user = User.find_by_normalized_email(email.normalize)
       raise "Passwords do not match" if ::BCrypt::Password.new(user.password) != password
       user.password = new_password
       user.save
@@ -70,9 +70,13 @@ module Mori
       user
     end
     def self.authenticate(email, password)
-      user = User.find_by_email(email)
+      user = User.find_by_normalized_email(email)
       raise 'Invalid Login' if user.blank? or ::BCrypt::Password.new(user.password) != password
       user
+    end
+    protected
+    def self.find_by_normalized_email(email)
+      User.find_by_email(email.normalize)
     end
   end
 end

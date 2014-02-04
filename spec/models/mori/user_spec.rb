@@ -57,9 +57,9 @@ module Mori
     #########################################
     # Helper methods for the User model
     #########################################
-    it "#find_by_email" do
+    it "#find_by_normalized_email" do
       create(:mori_minimal_user)
-      User.find_by_email('email@example.com').email.should eq 'email@example.com'
+      User.find_by_normalized_email('e maIl@eXam ple.com').email.should eq 'email@example.com'
     end
 
     #########################################
