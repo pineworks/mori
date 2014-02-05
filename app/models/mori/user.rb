@@ -10,8 +10,8 @@ module Mori
     validates :password_reset_token, uniqueness: true
     validates :invitation_token, uniqueness: true
 
-    before_save :normalize_email, :if => Proc.new { |user| user.email_changed? }
     before_save :encrypt_password, :if => Proc.new { |user| user.password_changed? }
+    before_validation :normalize_email, :if => Proc.new{ |user| user.email_changed? }
     before_create :send_email_confirmation, :if => Proc.new { |user| user.password.present? }
 
     # Methods called by ActiveRecord

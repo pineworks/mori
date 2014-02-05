@@ -44,13 +44,11 @@ module Mori
         user.password.should eq password_before
         user.password.to_s.should_not eq password_before
       end
-      it "should normalize the email" do
-        user = build(:mori_minimal_user, email: 'E MAIL@exa MpLE.com') 
-        before_email = user.email
-        if user.save
-          user.email.should eq "email@example.com"
-          user.email.should_not eq before_email
-        end
+      it "should normalize the email on save" do
+        user = build(:mori_minimal_user, email: "E MAIL@exa MpLE.com") 
+        user.save
+        user.email.should eq "email@example.com"
+        user.email.should_not eq "E MAIL@exa MpLE.com"
       end
     end
 

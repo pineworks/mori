@@ -10,3 +10,6 @@ spec/dummy/db/migrate/*
 database.yml
 *.DS_Store
 *.swp
+
+# Ignore Coverage Stuff
+coverage/*
