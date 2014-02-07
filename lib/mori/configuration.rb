@@ -2,7 +2,8 @@ module Mori
   class Configuration
     attr_accessor \
       :from_email,
-      :application_name
+      :application_name,
+      :account_database
 
     def initialize
       @from_email  = "noreply@example.com"

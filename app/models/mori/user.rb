@@ -5,6 +5,10 @@ module Mori
   class User < ActiveRecord::Base
     include Mori::Token
 
+    if Mori.configuration.account_database
+      establish_connection Mori.configuration.account_database
+    end
+
     validates :email, email: { strict_mode: true }, presence: true, uniqueness: true
     validates :password, presence: true, unless: :invitation_token?
     validates :password_reset_token, uniqueness: true
