@@ -84,3 +84,5 @@ module Mori
     end
   end
 end
+
+User = Mori::User
