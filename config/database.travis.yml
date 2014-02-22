@@ -5,6 +5,12 @@ postgresql: &postgresql
   database: mori_<%= Rails.env %>
   min_messages: ERROR
 
+user:
+  adapter: postgresql
+  username: postgres
+  password:
+  database: mori_users
+
 defaults: &defaults
   pool: 5
   timeout: 5000
