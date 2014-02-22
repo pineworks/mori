@@ -10,8 +10,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Aaron Miler"]
   s.email       = ["aaron@pineworks.io"]
   s.homepage    = "http://github.com/pineworks/mori"
-  s.summary     = "TODO: Summary of Mori."
-  s.description = "TODO: Description of Mori."
+  s.summary     = "Mori is a user authentication platform"
+  s.description = "Mori is a user authentication platform"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
