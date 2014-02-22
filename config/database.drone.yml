@@ -1,0 +1,10 @@
+test:
+  adapter: postgresql
+  username: postgres
+  password:
+  database: mori_test
+  min_messages: ERROR
+  pool: 5
+  timeout: 5000
+  host: localhost
+  template: template0
