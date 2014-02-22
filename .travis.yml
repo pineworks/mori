@@ -16,7 +16,7 @@ before_script:
   - cp config/database.travis.yml spec/dummy/config/database.yml
   - psql -c 'create database mori_test' -U postgres
 script:
-  - RAILS_ENV=test bundle exec rake app db:test:prepare --trace
+  - RAILS_ENV=test bundle exec rake app:db:test:prepare --trace
   - bundle exec rspec spec
 cache:
   bundler: true
