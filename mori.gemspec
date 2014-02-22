@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.name        = "mori"
   s.version     = Mori::VERSION
   s.authors     = ["Aaron Miler"]
-  s.email       = ["aaron@pineworks.com"]
+  s.email       = ["aaron@pineworks.io"]
   s.homepage    = "http://github.com/pineworks/mori"
   s.summary     = "TODO: Summary of Mori."
   s.description = "TODO: Description of Mori."
@@ -20,15 +20,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'bcrypt-ruby'
   s.add_dependency 'email_validator'
   s.add_dependency 'warden'
-  s.add_dependency 'rails', '>= 3.0.0'
-
-  s.add_development_dependency 'capybara'
-  s.add_development_dependency 'guard'
-  s.add_development_dependency 'guard-rspec'
-  s.add_development_dependency 'factory_girl_rails'
-  s.add_development_dependency "pg"
-  s.add_development_dependency 'rspec-rails'
-  s.add_development_dependency 'shoulda-matchers'
-  s.add_development_dependency 'timecop'
+  s.add_dependency 'slim'
+  s.add_dependency 'rails', '>= 3.2.0'
 
 end

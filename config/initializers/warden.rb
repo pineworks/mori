@@ -1,5 +1,6 @@
 Rails.application.config.middleware.use Warden::Manager do |manager|
-  manager.default_strategies :authentication
+  manager.default_strategies :password
+  manager.failure_app = Mori::SessionsController.action(:new)
 end
 
 Warden::Manager.serialize_into_session do |user|
@@ -7,17 +8,17 @@ Warden::Manager.serialize_into_session do |user|
 end
 
 Warden::Manager.serialize_from_session do |id|
-  User.find(id)
+  Mori::User.find(id)
 end
 
-Warden::Strategies.add(:authentication) do
+Warden::Strategies.add(:password) do
   def valid?
-    params['email'] and params['pasword']
+    params['mori_user']['email'] and params['mori_user']['password']
   end
 
   def authenticate!
-    user = User.find_by_email(params['email'])
-    if user and user.authenticate(params['password'])
+    user = Mori::User.find_by_email(params['mori_user']['email'])
+    if user and user.authenticate(params['mori_user']['password'])
       success! user
     else
       fail "Invalid login credentials"

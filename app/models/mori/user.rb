@@ -11,8 +11,8 @@ module Mori
 
     validates :email, email: { strict_mode: true }, presence: true, uniqueness: true
     validates :password, presence: true, unless: :invitation_token?
-    validates :password_reset_token, uniqueness: true
-    validates :invitation_token, uniqueness: true
+    validates :password_reset_token, uniqueness: true, if: :password_reset_token?
+    validates :invitation_token, uniqueness: true, if: :invitation_token?
 
     before_save :encrypt_password, :if => Proc.new { |user| user.password_changed? }
     before_validation :normalize_email, :if => Proc.new{ |user| user.email_changed? }
@@ -73,10 +73,9 @@ module Mori
       user.save
       user
     end
-    def self.authenticate(email, password)
-      user = User.find_by_normalized_email(email)
-      raise 'Invalid Login' if user.blank? or ::BCrypt::Password.new(user.password) != password
-      user
+    def authenticate(password)
+      raise 'Invalid Login' if ::BCrypt::Password.new(self.password) != password
+      true
     end
     protected
     def self.find_by_normalized_email(email)
@@ -84,5 +83,3 @@ module Mori
     end
   end
 end
-
-User = Mori::User

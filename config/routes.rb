@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
-  resources :users, :controller => 'mori/users', :only => [:new, :create]
+  resources :registrations, :controller => 'mori/registrations', :only => [:new, :create]
+  resources :sessions, :controller => 'mori/sessions', :only => [:new, :create, :destroy]
+  get '/login' => 'mori/sessions#new', :as => 'login'
+  delete '/logout' => 'mori/sessions#destroy', :as => 'logout'
   if Mori.configuration.allow_sign_up?
-    get '/sign_up' => 'mori/users#new', as: 'sign_up'
+    get '/sign_up' => 'mori/registrations#new', :as => 'sign_up'
   end
 end

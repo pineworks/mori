@@ -14,8 +14,6 @@ module Mori
     describe "is Valid: it" do
       it {should validate_presence_of(:email)}
       it {should validate_uniqueness_of(:email)}
-      it {should validate_uniqueness_of(:invitation_token)}
-      it {should validate_uniqueness_of(:password_reset_token)}
       it {should validate_presence_of(:password)}
       it { should allow_value('foo@example.co.uk').for(:email) }
       it { should allow_value('foo@example.com').for(:email) }
@@ -94,7 +92,7 @@ module Mori
     # Resetting the password
     #########################################
     describe "Resetting their password" do
-      before :each do
+      before(:each) do
         @user = create(:mori_minimal_user)
         User.forgot_password(@user.email)
         @user = User.find_by_email('email@example.com')
@@ -187,13 +185,10 @@ module Mori
         @user = create(:mori_minimal_user, :password => password)
       end
       it "should be able to authenticate with their credentials" do
-        User.authenticate(@user.email, password).should be_an_instance_of User
+        @user.authenticate(password).should be true
       end
       it "should raise an error if password is incorrect" do
-        expect{User.authenticate(@user.email, password2) }.to raise_error
-      end
-      it "should raise an error if no user is found" do
-        expect{User.authenticate(email, password) }.to raise_error
+        expect{@user.authenticate(password2) }.to raise_error
       end
     end
   end

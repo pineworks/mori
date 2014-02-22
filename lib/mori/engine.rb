@@ -1,6 +1,5 @@
 module Mori
   class Engine < ::Rails::Engine
-    isolate_namespace Mori
 
     config.generators do |g|
       g.test_framework      :rspec,        :fixture => false
@@ -10,7 +9,11 @@ module Mori
     end
 
     initializer 'mori.filter' do |app|
-      app.config.filter_parameters += [:passwordn]
+      app.config.filter_parameters += [:password]
+    end
+
+    config.to_prepare do
+      ApplicationHelper.send :include, MoriHelper
     end
   end
 end

@@ -11,13 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140204044714) do
+ActiveRecord::Schema.define(version: 20140209071716) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "hstore"
 
-  create_table "mori_users", force: true do |t|
+  create_table "users", force: true do |t|
     t.string   "email"
     t.text     "password"
     t.string   "invitation_token"
@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 20140204044714) do
     t.datetime "updated_at"
   end
 
-  add_index "mori_users", ["email"], name: "index_mori_users_on_email", using: :btree
-  add_index "mori_users", ["group_id"], name: "index_mori_users_on_group_id", using: :btree
+  add_index "users", ["email"], name: "index_users_on_email", using: :btree
+  add_index "users", ["group_id"], name: "index_users_on_group_id", using: :btree
 
 end

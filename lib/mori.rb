@@ -1,8 +1,9 @@
-require "warden"
-require "mori/configuration"
-require "mori/engine"
-require "mori/string"
-require "mori/token"
+require 'warden'
+require 'slim'
+require 'mori/configuration'
+require 'mori/engine'
+require 'mori/string'
+require 'mori/token'
 
 module Mori
   def self.root

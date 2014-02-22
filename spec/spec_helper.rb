@@ -5,6 +5,8 @@ $LOAD_PATH << File.join(PROJECT_ROOT, 'lib')
 
 require File.expand_path("../dummy/config/environment.rb",  __FILE__)
 
+Bundler.require
+
 require 'rspec/rails'
 require 'rspec/autorun'
 require 'mailer_matcher'
@@ -12,6 +14,8 @@ require 'factory_girl_rails'
 require 'shoulda-matchers'
 require 'timecop'
 require 'bcrypt'
+require 'capybara/rspec'
+
 
 # Coveralls!
 require 'coveralls'

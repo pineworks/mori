@@ -42,4 +42,7 @@ Dummy::Application.configure do
 	  :port => '2525',
 	  :authentication => :plain
 	}
+  FactoryGirl.definition_file_paths << Pathname.new("../factories")
+  FactoryGirl.definition_file_paths.uniq!
+  FactoryGirl.find_definitions
 end
