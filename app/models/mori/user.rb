@@ -74,7 +74,7 @@ module Mori
       user
     end
     def authenticate(password)
-      raise 'Invalid Login' if ::BCrypt::Password.new(self.password) != password
+      return false if ::BCrypt::Password.new(self.password) != password
       true
     end
     protected

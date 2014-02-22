@@ -188,7 +188,7 @@ module Mori
         @user.authenticate(password).should be true
       end
       it "should raise an error if password is incorrect" do
-        expect{@user.authenticate(password2) }.to raise_error
+        @user.authenticate(password2).should be false
       end
     end
   end
