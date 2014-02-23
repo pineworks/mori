@@ -1,9 +1,2 @@
 h1 New User
-= form_for @user, :url => '/registrations', :method => :post  do |f|
-  div.container
-    = f.label :email
-    = f.email_field :email
-  div.container
-    = f.label :password
-    = f.password_field :password
-  = f.submit
+= render :partial => 'mori/forms/registration'
