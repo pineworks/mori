@@ -10,8 +10,8 @@ describe "Sessions controller", :type => :feature do
      within '#new_session' do
        fill_in "Email", :with => @user.email
        fill_in "Password", :with => pass
+       click_button "Log In"
      end
-     page.find('#submit_button').click
    end
    it "should be able to log in" do
      log_in(password)

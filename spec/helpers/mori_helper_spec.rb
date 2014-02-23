@@ -1,15 +1,6 @@
 require 'spec_helper'
-
-# Specs in this file have access to a helper object that includes
-# the MoriHelper. For example:
-#
-# describe MoriHelper do
-#   describe "string concat" do
-#     it "concats two strings with spaces" do
-#       expect(helper.concat_strings("this","that")).to eq("this that")
-#     end
-#   end
-# end
 describe MoriHelper do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it "should return the logout link" do
+    logout_link.should eq link_to('Log Out', '/logout', :method => :delete)
+  end
 end
