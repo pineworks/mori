@@ -15,6 +15,7 @@ require 'shoulda-matchers'
 require 'timecop'
 require 'bcrypt'
 require 'capybara/rspec'
+require 'helpers'
 
 
 # Coveralls!
@@ -28,6 +29,7 @@ Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
 RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
+  config.include Helpers
 
   config.mock_with :rspec
   config.use_transactional_fixtures = true

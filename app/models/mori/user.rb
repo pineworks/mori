@@ -53,6 +53,7 @@ module Mori
     end
     def self.forgot_password(email)
       user = User.find_by_email(email)
+      return false if user.blank?
       user.password_reset_token = generate_token
       user.password_reset_sent = Date.today
       Mailer.password_reset_notification(user)

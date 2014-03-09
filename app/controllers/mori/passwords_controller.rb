@@ -7,7 +7,9 @@ class Mori::PasswordsController < MoriController
   end
   def send_reset
     # Send Password Reset to User
-    #Mori::User.forgot_password(params[:email])
+    unless Mori::User.forgot_password(params[:email])
+      render :reset
+    end
   end
   def update
     if params[:mori_user][:password_reset_token]

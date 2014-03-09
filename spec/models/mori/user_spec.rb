@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Mori
   describe User do
-    
+
     let(:password){"imapassword"}
     let(:password2){"imtheotherpassword"}
     let(:email){"theemail@theexample.com"}
@@ -10,7 +10,7 @@ module Mori
     #########################################
     # User Validation
     #########################################
-    
+
     describe "is Valid: it" do
       it {should validate_presence_of(:email)}
       it {should validate_uniqueness_of(:email)}
@@ -43,7 +43,7 @@ module Mori
         user.password.to_s.should_not eq password_before
       end
       it "should normalize the email on save" do
-        user = build(:mori_minimal_user, email: "E MAIL@exa MpLE.com") 
+        user = build(:mori_minimal_user, email: "E MAIL@exa MpLE.com")
         user.save
         user.email.should eq "email@example.com"
         user.email.should_not eq "E MAIL@exa MpLE.com"
@@ -103,7 +103,7 @@ module Mori
       end
       it "should require a valid reset token" do
         expect {@user.reset_password('token123',password)}.to raise_error
-        token = @user.password_reset_token 
+        token = @user.password_reset_token
         @user.reset_password(token, password).password.should eq password
       end
       it "should not be able to use an old token" do
@@ -117,7 +117,7 @@ module Mori
     #########################################
     # Actions a User can Take
     #########################################
-     
+
     describe "changing their password" do
       before :each do
         @user = create(:mori_minimal_user)
@@ -134,7 +134,7 @@ module Mori
     #########################################
     # Confirming Their Email
     #########################################
-    
+
     describe "confirming their email" do
       before :each do
         @user = create(:mori_minimal_user)
@@ -156,22 +156,19 @@ module Mori
     #########################################
     # Emails sent from the model
     #########################################
-    
+
     describe "should recieve an email for" do
       it "getting invited" do
-        Mailer.stub(:invite_user)
-        Mailer.should_receive(:invite_user)
+        Mailer.should_receive(:invite_user).and_call_original
         User.invite(email)
       end
       it "resetting their password" do
         user = create(:mori_minimal_user)
-        Mailer.stub(:password_reset_notification)
-        Mailer.should_receive(:password_reset_notification)
+        Mailer.should_receive(:password_reset_notification).and_call_original
         User.forgot_password(user.email)
       end
       it "confirming their email" do
-        Mailer.stub(:confirm_email)
-        Mailer.should_receive(:confirm_email)
+        Mailer.should_receive(:confirm_email).and_call_original
         user = create(:mori_minimal_user)
       end
     end
