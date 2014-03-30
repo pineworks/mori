@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "Sessions controller", :type => :feature do
    let(:password){"password123"}
-   before(:each) do
+   before :each  do
      @user = create(:mori_random_user, :password => "password123")
    end
    it "should be able to log in" do

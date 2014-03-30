@@ -102,14 +102,15 @@ module Mori
         @user.password_reset_sent.should eq Date.today
       end
       it "should require a valid reset token" do
-        expect {@user.reset_password('token123',password)}.to raise_error
+        expect {User.reset_password('token123',password)}.to raise_error
         token = @user.password_reset_token
-        @user.reset_password(token, password).password.should eq password
+        User.reset_password(token, password)
+        ::BCrypt::Password.new(User.find_by_email(@user.email).password).should eq password
       end
       it "should not be able to use an old token" do
         token = @user.password_reset_token
         ::Timecop.freeze(Date.today + 3.weeks) do
-          expect {@user.reset_password(token, password)}.to raise_error
+          expect {User.reset_password(token, password)}.to raise_error
         end
       end
     end
@@ -123,11 +124,17 @@ module Mori
         @user = create(:mori_minimal_user)
       end
       it "should be able to change their password" do
-        User.change_password(@user.email,"123456789sdf",password2)
+        @user.change_password("123456789sdf",password2,password2)
         ::BCrypt::Password.new(User.find_by_email(@user.email).password).should eq password2
       end
+      it "should return false if both new passwords don't match" do
+        valid,message = @user.change_password("123456789sdf",password2,"potato")
+        valid.should eq false
+        message.should eq I18n.t('flashes.passwords_did_not_match')
+      end
       it "should raise an error if the incorrect password is provided" do
-        expect{ User.change_password(@user.email,password2,password)}.to raise_error
+        valid, message = @user.change_password(password2,password,password)
+        valid.should be false
       end
     end
 

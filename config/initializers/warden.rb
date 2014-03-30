@@ -13,7 +13,7 @@ end
 
 Warden::Strategies.add(:password) do
   def valid?
-    params['mori_user']['email'] and params['mori_user']['password']
+    params['mori_user'].present? and params['mori_user']['email'] and params['mori_user']['password']
   end
 
   def authenticate!

@@ -22,8 +22,42 @@ describe "Password Management", :type => :feature do
     click_button "Reset Password"
     page.has_content?('Forgot Password').should be true
   end
-  it "Changing your password" do
-    log_in(@user.email, 'password123')
+  describe "Changing your Password" do
+    it "should chnage a users password" do
+      new_pass = "potato"
+      log_in(@user.email, 'password123')
+      visit '/passwords/change'
+      within "#password_change_form" do
+        fill_in 'password', :with => 'password123'
+        fill_in 'new_password', :with => new_pass
+        fill_in 'new_password_confirmation', :with => new_pass
+      end
+      click_button "Change Password"
+      ::BCrypt::Password.new(Mori::User.find(@user.id).password).should eq new_pass
+      current_path.should eq Mori.configuration.after_password_change_url
+    end
+    it "should fail if the current password is not correct" do
+      log_in(@user.email, 'password123')
+      visit '/passwords/change'
+      within "#password_change_form" do
+        fill_in 'password', :with => 'passw123'
+        fill_in 'new_password', :with => "pass"
+        fill_in 'new_password_confirmation', :with => "pass"
+      end
+      click_button "Change Password"
+      page.has_content?(I18n.t('flashes.password_change_failed')).should be true
+    end
+    it "should fail when the password confirmations don't match" do
+      log_in(@user.email, 'password123')
+      visit '/passwords/change'
+      within "#password_change_form" do
+        fill_in 'password', :with => 'password123'
+        fill_in 'new_password', :with => 'potato'
+        fill_in 'new_password_confirmation', :with => 'potatwo'
+      end
+      click_button "Change Password"
+      page.has_content?(I18n.t('flashes.passwords_did_not_match')).should be true
+    end
   end
   pending "Forgetting your password"
 end

@@ -39,12 +39,12 @@ module Mori
       user.save
       user
     end
-    def reset_password(token,new_password)
-      raise 'Invalid Password Reset Token' unless token == self.password_reset_token
-      raise 'Expired Reset Token' if self.password_reset_sent < Date.today - 2.weeks
-      self.password = new_password
-      self.save
-      self
+    def self.reset_password(token,new_password)
+      user = User.find_by_password_reset_token(token)
+      raise 'Invalid Password Reset Token' unless token == user.password_reset_token
+      raise 'Expired Reset Token' if user.password_reset_sent < Date.today - 2.weeks
+      user.password = new_password
+      user.save
     end
 
     def self.invite(email)
@@ -59,12 +59,11 @@ module Mori
       Mailer.password_reset_notification(user)
       user.save
     end
-    def self.change_password(email, password, new_password)
-      user = User.find_by_normalized_email(email.normalize)
-      raise "Passwords do not match" if ::BCrypt::Password.new(user.password) != password
-      user.password = new_password
-      user.save
-      user
+    def change_password(password, new_password, confirm)
+      return false, I18n.t('flashes.password_change_failed') if ::BCrypt::Password.new(self.password) != password
+      return false, I18n.t('flashes.passwords_did_not_match') if new_password != confirm
+      self.password = new_password
+      self.save
     end
     def self.confirm_email(email, token)
       user = User.find_by_confirmation_token(token)

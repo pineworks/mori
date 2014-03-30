@@ -14,4 +14,7 @@ en:
         "Follow the link below to accept the invitation"
       closing:
         "If you don't wish to accept the invitation to %{application_name}, simply ignore this email"
-
+  flashes:
+    passwords_did_not_match: "Your passwords did not match, please try again"
+    password_change_failed: "We were unable to reset your password. Please try again"
+    password_changed_sucessfully: "Your password has been updated"

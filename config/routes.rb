@@ -1,12 +1,13 @@
 Rails.application.routes.draw do
   resources :registrations, :controller => 'mori/registrations', :only => [:new, :create]
   resources :sessions, :controller => 'mori/sessions', :only => [:new, :create, :destroy]
-  resources :passwords, :controller => 'mori/passwords', :only => :update do
+  resources :passwords, :controller => 'mori/passwords', :only => [] do
     collection do
       get :forgot
       get :reset
       get :change
       post :send_reset
+      post :update
     end
   end
   get '/login' => 'mori/sessions#new', :as => 'login'

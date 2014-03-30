@@ -1,4 +1,5 @@
 class Mori::PasswordsController < MoriController
+  before_filter :authenticate!, :only => :change
   def reset
     # View for password reset
   end
@@ -12,10 +13,13 @@ class Mori::PasswordsController < MoriController
     end
   end
   def update
-    if params[:mori_user][:password_reset_token]
-      # forgot password
+    valid,message = current_user.change_password(params[:password],params[:new_password], params[:new_password_confirmation])
+    if valid
+      flash[:notice] = t('flashes.password_changed_successfully')
+      redirect_to Mori.configuration.after_password_change_url
     else
-      # change
+      flash[:notice] = message
+      render :change
     end
   end
 end
