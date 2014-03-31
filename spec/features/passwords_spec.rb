@@ -6,8 +6,8 @@ describe "Password Management", :type => :feature do
   end
   it "when you Resetting your password" do
     Mori::Mailer.should_receive(:password_reset_notification).exactly(1).times.and_call_original
-    visit '/passwords/reset'
-    within "#password_reset_form" do
+    visit '/passwords/forgot'
+    within "#forgot_password_form" do
       fill_in 'email', :with => @user.email
     end
     click_button "Reset Password"
@@ -15,8 +15,8 @@ describe "Password Management", :type => :feature do
     page.has_content?('Password Reset Sent').should be true
   end
   it "shouldn't reset a password for a user that doesn't exist" do
-    visit '/passwords/reset'
-    within "#password_reset_form" do
+    visit '/passwords/forgot'
+    within "#forgot_password_form" do
       fill_in 'email', :with => "imaemail@email.com"
     end
     click_button "Reset Password"
