@@ -41,8 +41,8 @@ module Mori
     end
     def self.reset_password(token,new_password)
       user = User.find_by_password_reset_token(token)
-      raise 'Invalid Password Reset Token' unless token == user.password_reset_token
-      raise 'Expired Reset Token' if user.password_reset_sent < Date.today - 2.weeks
+      return false, 'Invalid Password Reset Token' unless token == user.password_reset_token
+      return false, 'Expired Reset Token' if user.password_reset_sent < Date.today - 2.weeks
       user.password = new_password
       user.save
     end

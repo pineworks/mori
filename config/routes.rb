@@ -8,6 +8,7 @@ Rails.application.routes.draw do
       get :change
       post :send_reset
       post :update
+      post :reset_password
     end
   end
   get '/login' => 'mori/sessions#new', :as => 'login'

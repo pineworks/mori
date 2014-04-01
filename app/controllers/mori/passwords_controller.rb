@@ -7,6 +7,7 @@ class Mori::PasswordsController < MoriController
     # View for change password
   end
   def reset
+    @user = Mori::User.find_by_password_reset_token(params[:token])
   end
   def send_reset
     # Send Password Reset to User
@@ -23,6 +24,17 @@ class Mori::PasswordsController < MoriController
     else
       flash[:notice] = message
       render :change
+    end
+  end
+  def reset_password
+    render :reset if params[:mori_user][:password] != params[:mori_user][:password_confirmation]
+    valid, message = Mori::User.reset_password(params[:mori_user][:password_reset_token],params[:mori_user][:password])
+    if valid
+      warden.authenticate!
+      redirect_to Mori.configuration.after_login_url, notice: "You have logged in"
+    else
+      flash[:notice] = message
+      render :reset
     end
   end
 end

@@ -110,7 +110,9 @@ module Mori
       it "should not be able to use an old token" do
         token = @user.password_reset_token
         ::Timecop.freeze(Date.today + 3.weeks) do
-          expect {User.reset_password(token, password)}.to raise_error
+          valid, message = User.reset_password(token, password)
+          valid.should be false
+          message.should eq 'Expired Reset Token'
         end
       end
     end

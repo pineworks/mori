@@ -14,3 +14,5 @@ gem 'factory_girl'
 gem 'factory_girl_rails'
 gem 'faker'
 gem 'selenium-webdriver'
+
+gem 'jquery-rails'

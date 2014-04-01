@@ -4,23 +4,36 @@ describe "Password Management", :type => :feature do
   before(:each) do
     @user = create(:mori_minimal_user, :password => 'password123')
   end
-  it "when you Resetting your password" do
-    Mori::Mailer.should_receive(:password_reset_notification).exactly(1).times.and_call_original
-    visit '/passwords/forgot'
-    within "#forgot_password_form" do
-      fill_in 'email', :with => @user.email
+  describe "Resetting your Password" do
+    it "when you submit a forgotten password" do
+      Mori::Mailer.should_receive(:password_reset_notification).exactly(1).times.and_call_original
+      visit '/passwords/forgot'
+      within "#forgot_password_form" do
+        fill_in 'email', :with => @user.email
+      end
+      click_button "Reset Password"
+      current_url.should eq send_reset_passwords_url
+      page.has_content?('Password Reset Sent').should be true
     end
-    click_button "Reset Password"
-    current_url.should eq send_reset_passwords_url
-    page.has_content?('Password Reset Sent').should be true
-  end
-  it "shouldn't reset a password for a user that doesn't exist" do
-    visit '/passwords/forgot'
-    within "#forgot_password_form" do
-      fill_in 'email', :with => "imaemail@email.com"
+    it "shouldn't send a forgotten password for a user that doesn't exist" do
+      visit '/passwords/forgot'
+      within "#forgot_password_form" do
+        fill_in 'email', :with => "imaemail@email.com"
+      end
+      click_button "Reset Password"
+      page.has_content?('Forgot Password').should be true
     end
-    click_button "Reset Password"
-    page.has_content?('Forgot Password').should be true
+    it "should change a users password when they go to the link from the email" do
+      Mori::User.forgot_password(@user.email)
+      user = Mori::User.find_by_email(@user.email)
+      visit "/passwords/reset?token=#{user.password_reset_token}"
+      within ".edit_mori_user" do
+        fill_in 'mori_user_password', :with => 'password123'
+        fill_in 'mori_user_password_confirmation', :with => 'password123'
+      end
+      click_button "Update Password"
+      page.current_path.should eq Mori.configuration.after_login_url
+    end
   end
   describe "Changing your Password" do
     it "should chnage a users password" do
