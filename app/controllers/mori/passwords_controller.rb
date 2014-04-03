@@ -8,6 +8,7 @@ class Mori::PasswordsController < MoriController
   end
   def reset
     @user = Mori::User.find_by_password_reset_token(params[:token])
+    redirect_to root_path unless @user
   end
   def send_reset
     # Send Password Reset to User

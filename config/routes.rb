@@ -11,6 +11,11 @@ Rails.application.routes.draw do
       post :reset_password
     end
   end
+  resources :invites, :controller => 'mori/invites', :only => [:show] do
+    collection do
+      :accept
+    end
+  end
   get '/login' => 'mori/sessions#new', :as => 'login'
   delete '/logout' => 'mori/sessions#destroy', :as => 'logout'
   if Mori.configuration.allow_sign_up?

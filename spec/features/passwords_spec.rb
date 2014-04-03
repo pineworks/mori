@@ -34,6 +34,10 @@ describe "Password Management", :type => :feature do
       click_button "Update Password"
       page.current_path.should eq Mori.configuration.after_login_url
     end
+    it "should redirect if no user is found" do
+      visit "/passwords/reset?token=123asdf123"
+      page.current_path.should eq root_path
+    end
   end
   describe "Changing your Password" do
     it "should chnage a users password" do
