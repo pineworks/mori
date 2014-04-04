@@ -4,7 +4,7 @@ describe "Password Management", :type => :feature do
   before(:each) do
     @user = create(:mori_minimal_user, :password => 'password123')
   end
-  describe "Resetting your Password" do
+  describe "Resetting/Forgetting your Password" do
     it "when you submit a forgotten password" do
       Mori::Mailer.should_receive(:password_reset_notification).exactly(1).times.and_call_original
       visit '/passwords/forgot'
@@ -34,13 +34,30 @@ describe "Password Management", :type => :feature do
       click_button "Update Password"
       page.current_path.should eq Mori.configuration.after_login_url
     end
+    it "should render the reset form again if the change failed" do
+      Timecop.freeze(Date.today - 3.weeks) do
+        Mori::User.forgot_password(@user.email)
+      end
+      user = Mori::User.find_by_email(@user.email)
+      visit "/passwords/reset?token=#{user.password_reset_token}"
+      within ".edit_mori_user" do
+        fill_in 'mori_user_password', :with => 'password123'
+        fill_in 'mori_user_password_confirmation', :with => 'password123'
+      end
+      click_button "Update Password"
+      page.has_content?('Expired Reset Token').should be true
+    end
     it "should redirect if no user is found" do
       visit "/passwords/reset?token=123asdf123"
       page.current_path.should eq root_path
     end
   end
   describe "Changing your Password" do
-    it "should chnage a users password" do
+    it "should require you to be logged in" do
+      visit '/passwords/change'
+      page.has_content?('Log In').should be true
+    end
+    it "should change a users password" do
       new_pass = "potato"
       log_in(@user.email, 'password123')
       visit '/passwords/change'
@@ -76,5 +93,4 @@ describe "Password Management", :type => :feature do
       page.has_content?(I18n.t('flashes.passwords_did_not_match')).should be true
     end
   end
-  pending "Forgetting your password"
 end

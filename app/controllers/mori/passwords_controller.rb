@@ -28,14 +28,13 @@ class Mori::PasswordsController < MoriController
     end
   end
   def reset_password
-    render :reset if params[:mori_user][:password] != params[:mori_user][:password_confirmation]
-    valid, message = Mori::User.reset_password(params[:mori_user][:password_reset_token],params[:mori_user][:password])
+    valid, message = Mori::User.reset_password(params[:mori_user][:password_reset_token],params[:mori_user][:password], params[:mori_user][:password_confirmation])
     if valid
       warden.authenticate!
-      redirect_to Mori.configuration.after_login_url, notice: "You have logged in"
+      redirect_to Mori.configuration.after_login_url, notice: t('flashes.password_has_been_reset')
     else
       flash[:notice] = message
-      render :reset
+      redirect_to "/passwords/reset?token=#{params[:mori_user][:password_reset_token]}"
     end
   end
 end

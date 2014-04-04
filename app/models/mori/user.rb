@@ -39,8 +39,9 @@ module Mori
       user.save
       user
     end
-    def self.reset_password(token,new_password)
+    def self.reset_password(token,new_password,confirmation)
       user = User.find_by_password_reset_token(token)
+      return false, 'Passwords do not match' if new_password != confirmation
       return false, 'Invalid Password Reset Token' unless token == user.password_reset_token
       return false, 'Expired Reset Token' if user.password_reset_sent < Date.today - 2.weeks
       user.password = new_password

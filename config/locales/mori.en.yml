@@ -18,3 +18,5 @@ en:
     passwords_did_not_match: "Your passwords did not match, please try again"
     password_change_failed: "We were unable to reset your password. Please try again"
     password_changed_sucessfully: "Your password has been updated"
+    password_has_been_reset: "Your password has been reset"
+

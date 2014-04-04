@@ -104,13 +104,13 @@ module Mori
       it "should require a valid reset token" do
         expect {User.reset_password('token123',password)}.to raise_error
         token = @user.password_reset_token
-        User.reset_password(token, password)
+        User.reset_password(token, password, password)
         ::BCrypt::Password.new(User.find_by_email(@user.email).password).should eq password
       end
       it "should not be able to use an old token" do
         token = @user.password_reset_token
         ::Timecop.freeze(Date.today + 3.weeks) do
-          valid, message = User.reset_password(token, password)
+          valid, message = User.reset_password(token, password, password)
           valid.should be false
           message.should eq 'Expired Reset Token'
         end
