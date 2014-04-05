@@ -70,6 +70,11 @@ module Mori
         @user.should_not be nil
         @user.invitation_sent.should eq Date.today
       end
+      it "should not be able to invite a user that exists" do
+        valid, message = User.invite(email)
+        valid.should be false
+        message.should eq I18n.t('flashes.could_not_invite_user')
+      end
       describe "accepting the invitation" do
         before :each do
           User.invite(email)

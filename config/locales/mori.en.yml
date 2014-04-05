@@ -19,4 +19,5 @@ en:
     password_change_failed: "We were unable to reset your password. Please try again"
     password_changed_sucessfully: "Your password has been updated"
     password_has_been_reset: "Your password has been reset"
+    could_not_invite_user: "Could not invite user"
 

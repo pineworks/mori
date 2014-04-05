@@ -50,7 +50,12 @@ module Mori
 
     def self.invite(email)
       user = User.create({:email => email, :invitation_token => generate_token, :invitation_sent => Date.today})
-      Mailer.invite_user(user)
+      if user.save
+        Mailer.invite_user(user)
+        return true, user
+      else
+        return false, I18n.t('flashes.could_not_invite_user')
+      end
     end
     def self.forgot_password(email)
       user = User.find_by_normalized_email(email)

@@ -8,7 +8,8 @@ module Mori
       :after_signup_url,
       :after_login_url,
       :after_logout_url,
-      :after_password_change_url
+      :after_password_change_url,
+      :after_invite_url
 
     def initialize
       @from_email  = "noreply@example.com"
@@ -18,6 +19,7 @@ module Mori
       @after_login_url = '/'
       @after_logout_url = '/'
       @after_password_change_url = '/'
+      @after_invite_url = '/'
     end
     def allow_sign_up?
       allow_sign_up

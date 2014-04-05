@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   resources :invites, :controller => 'mori/invites', :only => [:show, :new] do
     collection do
       post :accept
-      post :send
+      post :send_user
     end
   end
   get '/login' => 'mori/sessions#new', :as => 'login'

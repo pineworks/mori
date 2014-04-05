@@ -1,0 +1,7 @@
+<h3> <%= flash[:notice] %></h3>
+<%= form_tag send_user_invites_path, :id => "invite_new_user_form" do %>
+  <h3>Invite New User</h3>
+  <%= label_tag :email, "E-mail" %>
+  <%= text_field_tag :email %>
+  <%= submit_tag "Invite User" %>
+<% end %>

@@ -10,4 +10,14 @@ class Mori::InvitesController < MoriController
   end
   def accept
   end
+  def send_user
+    valid, message = Mori::User.invite(params[:email])
+    if valid
+      flash[:notice] = "An invite has been sent to #{params[:email]}"
+      redirect_to Mori.configuration.after_invite_url
+    else
+      flash[:notice] = message
+      render :new
+    end
+  end
 end
