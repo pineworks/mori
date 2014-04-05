@@ -14,6 +14,7 @@ module Mori
 
     config.to_prepare do
       ApplicationHelper.send :include, MoriHelper
+      ActionController::Metal.send :include, ::Mori::ApplicationController
     end
   end
 end

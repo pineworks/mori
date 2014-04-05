@@ -81,13 +81,15 @@ module Mori
           @user = User.find_by_email(email)
         end
         it "should set their password" do
-          user = @user.accept_invitation(@user.invitation_token,password)
+          user = @user.accept_invitation(@user.invitation_token,password,password)
           user.password.to_s.should_not eq password
           user.password.should eq password
         end
         it "should not be able to use a stale token" do
           Timecop.freeze(Date.today + 3.weeks) do
-            expect{@user.accept_invitation(@user.invitation_token,password)}.to raise_error
+            valid, message = @user.accept_invitation(@user.invitation_token,password,password)
+            valid.should eq false
+            message.should eq 'Expired Invitation Token'
           end
         end
       end
@@ -116,7 +118,7 @@ module Mori
         token = @user.password_reset_token
         ::Timecop.freeze(Date.today + 3.weeks) do
           valid, message = User.reset_password(token, password, password)
-          valid.should be false
+          valid.should eq false
           message.should eq 'Expired Reset Token'
         end
       end
@@ -141,7 +143,7 @@ module Mori
       end
       it "should raise an error if the incorrect password is provided" do
         valid, message = @user.change_password(password2,password,password)
-        valid.should be false
+        valid.should eq false
       end
     end
 
@@ -196,10 +198,10 @@ module Mori
         @user = create(:mori_minimal_user, :password => password)
       end
       it "should be able to authenticate with their credentials" do
-        @user.authenticate(password).should be true
+        @user.authenticate(password).should eq true
       end
       it "should raise an error if password is incorrect" do
-        @user.authenticate(password2).should be false
+        @user.authenticate(password2).should eq false
       end
     end
   end

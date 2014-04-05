@@ -1,4 +1,4 @@
-class Mori::RegistrationsController < MoriController
+class Mori::RegistrationsController < ActionController::Base
   def new
     if current_user
       redirect_to Mori.configuration.after_login_url
