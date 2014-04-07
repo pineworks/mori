@@ -5,6 +5,6 @@ class ApplicationController < ActionController::Base
 
   def test_login
     authenticate!
-    render :text => "test_login"
+    render :text => "Logged In"
   end
 end

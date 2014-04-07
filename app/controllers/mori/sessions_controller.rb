@@ -1,4 +1,4 @@
-class Mori::SessionsController < ActionController::Base
+class Mori::SessionsController < MoriController
   def new
     redirect_to Mori.configuration.after_login_url if current_user
     @user = Mori::User.new

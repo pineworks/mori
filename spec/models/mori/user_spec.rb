@@ -81,9 +81,8 @@ module Mori
           @user = User.find_by_email(email)
         end
         it "should set their password" do
-          user = @user.accept_invitation(@user.invitation_token,password,password)
-          user.password.to_s.should_not eq password
-          user.password.should eq password
+          @user.accept_invitation(@user.invitation_token,password,password)
+          @user.reload.password.should_not eq password
         end
         it "should not be able to use a stale token" do
           Timecop.freeze(Date.today + 3.weeks) do

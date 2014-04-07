@@ -1,4 +1,4 @@
-class Mori::PasswordsController < ActionController::Base
+class Mori::PasswordsController < MoriController
   before_filter :authenticate!, :only => :change
   def forgot
     # View for sending password reset
