@@ -32,12 +32,14 @@ module Mori
       Mailer.confirm_email(self)
     end
 
-    def accept_invitation(token,new_password)
+    def accept_invitation(token, password, password_confirmation)
       user = User.find_by_invitation_token(token)
-      raise 'Expired Invitation Token' if user.invitation_sent < Date.today - 2.weeks
-      user.password = new_password
-      user.save
-      user
+      return false, I18n.t('flashes.passwords_dont_match') if password != password_confirmation
+      return false, 'Expired Invitation Token' if user.invitation_sent < Date.today - 2.weeks
+      user.password = password
+      if user.save
+        return true, I18n.t('flashes.accepted_invitation_message')
+      end
     end
     def self.reset_password(token,new_password,confirmation)
       user = User.find_by_password_reset_token(token)

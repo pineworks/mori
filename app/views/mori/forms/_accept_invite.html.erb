@@ -1,0 +1,18 @@
+<%= form_for @user, :url => accept_invites_path, :id => "accept_invites_form" do |f| %>
+  <h3>Accept Invitation</h3>
+  <h4><%= flash[:notice] %></h4>
+
+    <%= f.hidden_field :invitation_token %>
+    <%= f.hidden_field :email %>
+
+  <div class="control-group">
+    <%= f.label :password %>
+    <%= f.password_field :password %>
+  </div>
+  <div class="control-group">
+    <%= f.label :password_confirmation %>
+    <%= f.password_field :password_confirmation %>
+  </div>
+  <%= f.submit "Accept Invitation" %>
+
+<% end %>
