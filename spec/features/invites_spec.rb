@@ -39,12 +39,14 @@ describe "Inviting Users", :type => :feature do
     end
     it "should accept the invite and log the new user in" do
       visit "/invites/#{@invited.invitation_token}"
-      Mori::User.should_receive(:accept_invitation).exactly(1).times
+      Mori::User.should_receive(:accept_invitation).exactly(1).times.and_call_original
       within(:css, ".edit_mori_user") do
         fill_in "Password", :with => "password123"
         fill_in "Password confirmation", :with => "password123"
       end
-      click_button "Accept Invitation"
+      click_button "Accept"
+      page.current_path.should eq Mori.configuration.dashboard_path
+      page.has_content?(I18n.t('flashes.logged_in')).should be true
     end
   end
 end

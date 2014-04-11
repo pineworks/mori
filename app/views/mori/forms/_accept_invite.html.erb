@@ -1,4 +1,4 @@
-<%= form_for @user, :url => accept_invites_path, :id => "accept_invites_form" do |f| %>
+<%= form_for @user, :url => accept_invites_path, :method => :patch, :id => "accept_invites_form" do |f| %>
   <h3>Accept Invitation</h3>
   <h4><%= flash[:notice] %></h4>
 
@@ -13,6 +13,6 @@
     <%= f.label :password_confirmation %>
     <%= f.password_field :password_confirmation %>
   </div>
-  <%= f.submit "Accept Invitation" %>
+  <%= f.submit "Accept" %>
 
 <% end %>

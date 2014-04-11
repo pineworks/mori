@@ -1,5 +1,6 @@
 <%= form_for @user, :url => sessions_path, :method => :post, :html => { :id => "new_session"} do |f| %>
   <h3>Log In</h3>
+  <%= flash[:notice] %>
   <div class="form-group">
     <%= f.label :email %>
     <%= f.text_field :email %>

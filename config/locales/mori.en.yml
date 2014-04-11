@@ -21,3 +21,4 @@ en:
     password_has_been_reset: "Your password has been reset"
     could_not_invite_user: "Could not invite user"
     accepted_invitation_message: "You have accepted the invitation, welcome magical user"
+    logged_in: "You have logged in"

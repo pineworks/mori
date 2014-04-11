@@ -81,12 +81,12 @@ module Mori
           @user = User.find_by_email(email)
         end
         it "should set their password" do
-          @user.accept_invitation(@user.invitation_token,password,password)
+          User.accept_invitation(@user.invitation_token,password,password)
           @user.reload.password.should_not eq password
         end
         it "should not be able to use a stale token" do
           Timecop.freeze(Date.today + 3.weeks) do
-            valid, message = @user.accept_invitation(@user.invitation_token,password,password)
+            valid, message = User.accept_invitation(@user.invitation_token,password,password)
             valid.should eq false
             message.should eq 'Expired Invitation Token'
           end

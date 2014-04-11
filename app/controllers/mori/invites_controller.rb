@@ -8,6 +8,7 @@ class Mori::InvitesController < MoriController
   end
   def accept
     valid, message = Mori::User.accept_invitation(user_params[:invitation_token],user_params[:password],user_params[:password_confirmation])
+    puts message
     if valid
       warden.authenticate!
       flash[:notice] = message

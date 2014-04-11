@@ -9,7 +9,8 @@ module Mori
       :after_login_url,
       :after_logout_url,
       :after_password_change_url,
-      :after_invite_url
+      :after_invite_url,
+      :dashboard_path
 
     def initialize
       @from_email  = "noreply@example.com"
@@ -20,6 +21,7 @@ module Mori
       @after_logout_url = '/'
       @after_password_change_url = '/'
       @after_invite_url = '/'
+      @dashboard_path = '/'
     end
     def allow_sign_up?
       allow_sign_up
