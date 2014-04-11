@@ -37,11 +37,7 @@ module Mori
       return false, I18n.t('flashes.passwords_dont_match') if password != password_confirmation
       return false, 'Expired Invitation Token' if user.invitation_sent < Date.today - 2.weeks
       user.password = password
-      if user.save
-        return true, I18n.t('flashes.logged_in')
-      else
-        return false, "Please try again"
-      end
+      return true, I18n.t('flashes.logged_in') if user.save
     end
     def self.reset_password(token,new_password,confirmation)
       user = User.find_by_password_reset_token(token)
