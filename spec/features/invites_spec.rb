@@ -37,6 +37,17 @@ describe "Inviting Users", :type => :feature do
       visit "/invites/asd234fdsasd234"
       page.current_path.should eq root_path
     end
+    it "should redirect to the invites path if validation fails" do
+      visit "/invites/#{@invited.invitation_token}"
+      Mori::User.should_receive(:accept_invitation).exactly(1).times.and_call_original
+      within(:css, ".edit_mori_user") do
+        fill_in "Password", :with => "passwoasdfasdfasdasdf"
+        fill_in "Password confirmation", :with => "password123"
+      end
+      click_button "Accept"
+      page.current_path.should eq "/invites/#{@invited.invitation_token}"
+      page.has_content?(I18n.t('flashes.passwords_dont_match')).should eq true
+    end
     it "should accept the invite and log the new user in" do
       visit "/invites/#{@invited.invitation_token}"
       Mori::User.should_receive(:accept_invitation).exactly(1).times.and_call_original
