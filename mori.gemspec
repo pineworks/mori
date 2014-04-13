@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
 
   s.test_files = Dir["spec/**/*"]
 
+  s.add_dependency 'less-rails-bootstrap'
   s.add_dependency 'bcrypt-ruby'
   s.add_dependency 'email_validator'
   s.add_dependency 'warden'

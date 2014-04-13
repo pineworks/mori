@@ -7,6 +7,7 @@ class Mori::PasswordsController < MoriController
     # View for change password
   end
   def reset
+    redirect_to root_path unless params[:token]
     @user = Mori::User.find_by_password_reset_token(params[:token])
     redirect_to root_path unless @user
   end

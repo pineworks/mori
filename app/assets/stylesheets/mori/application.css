@@ -8,6 +8,31 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
+ *= require bootstrap.min
  *= require_self
  *= require_tree .
  */
+body {
+  padding-top:50px;
+  background-color:#E6E9ED;
+}
+
+.form-wrap {
+  padding-bottom:20px;
+  padding-top:65px;
+  overflow:hidden;
+  background-color:#F5F7FA;
+}
+.form-wrap button {
+  float:right;
+}
+.form-wrap .form-title {
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  margin:0;
+  padding:10px;
+  color:#FFF;
+  background-color:#4A89DC;
+}

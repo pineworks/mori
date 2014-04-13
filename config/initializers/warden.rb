@@ -21,7 +21,7 @@ Warden::Strategies.add(:password) do
     if user and user.authenticate(params['mori_user']['password'])
       success! user
     else
-      fail "Invalid login credentials"
+      fail! "Invalid login credentials"
     end
   end
 end

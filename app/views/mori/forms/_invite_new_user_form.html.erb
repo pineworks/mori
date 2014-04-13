@@ -1,7 +1,14 @@
-<h3> <%= flash[:notice] %></h3>
 <%= form_tag send_user_invites_path, :id => "invite_new_user_form" do %>
-  <h3>Invite New User</h3>
-  <%= label_tag :email, "E-mail" %>
-  <%= text_field_tag :email %>
-  <%= submit_tag "Invite User" %>
+  <h3 class="form-title">Invite New User</h3>
+  <% if flash[:notice] %>
+    <div class="alert alert-danger alert-dismissable">
+      <%= flash[:notice] %>
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    </div>
+  <% end %>
+  <div class="form-group">
+    <%= label_tag :email, "E-mail" %>
+    <%= text_field_tag :email,"", :class => 'form-control' %>
+  </div>
+  <%= button_tag "Invite User", :type => :submit, :class => "btn btn-primary" %>
 <% end %>
