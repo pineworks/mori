@@ -1,18 +1,16 @@
 <%= form_for @user, :url => accept_invites_path, :method => :patch, :id => "accept_invites_form" do |f| %>
-  <h3>Accept Invitation</h3>
+  <h3 class="form-title">Accept Invitation</h3>
   <h4><%= flash[:notice] %></h4>
-
     <%= f.hidden_field :invitation_token %>
     <%= f.hidden_field :email %>
-
-  <div class="control-group">
+  <div class="form-group">
     <%= f.label :password %>
-    <%= f.password_field :password %>
+    <%= f.password_field :password, :class => "form-control" %>
   </div>
-  <div class="control-group">
+  <div class="form-group">
     <%= f.label :password_confirmation %>
-    <%= f.password_field :password_confirmation %>
+    <%= f.password_field :password_confirmation, :class => "form-control" %>
   </div>
-  <%= f.submit "Accept" %>
+  <%= f.button "Accept", :type => :submit, :class => "btn btn-primary" %>
 
 <% end %>
