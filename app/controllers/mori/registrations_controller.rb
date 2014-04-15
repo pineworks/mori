@@ -16,6 +16,21 @@ class Mori::RegistrationsController < MoriController
       render "new"
     end
   end
+
+  def confirmation
+    if params[:token]
+      valid, message = Mori::User.confirm_email(params[:token])
+      if valid
+        flash[:notice] = message
+        redirect_to Mori.configuration.dashboard_path
+      else
+        flash[:notice] = message
+        redirect_to root_path
+      end
+    else
+      redirect_to root_path unless params[:token]
+    end
+  end
   private
 
   def user_params

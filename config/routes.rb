@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  resources :registrations, :controller => 'mori/registrations', :only => [:new, :create]
+  resources :registrations, :controller => 'mori/registrations', :only => [:new, :create] do
+    collection do
+      get :confirmation
+    end
+  end
   resources :sessions, :controller => 'mori/sessions', :only => [:new, :create, :destroy]
   resources :passwords, :controller => 'mori/passwords', :only => [] do
     collection do

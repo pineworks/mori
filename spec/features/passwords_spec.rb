@@ -21,7 +21,7 @@ describe "Password Management", :type => :feature do
         fill_in 'email', :with => "imaemail@email.com"
       end
       click_button "Reset Password"
-      page.has_content?('Forgot Password').should be true
+      page.has_content?('Reset My Password').should be true
     end
     it "should change a users password when they go to the link from the email" do
       Mori::User.forgot_password(@user.email)

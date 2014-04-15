@@ -47,7 +47,6 @@ module Mori
       user.password = new_password
       user.save
     end
-
     def self.invite(email)
       user = User.create({:email => email, :invitation_token => generate_token, :invitation_sent => Date.today})
       if user.save
@@ -71,13 +70,14 @@ module Mori
       self.password = new_password
       self.save
     end
-    def self.confirm_email(email, token)
+    def self.confirm_email(token)
       user = User.find_by_confirmation_token(token)
-      raise 'Invalid Confirmation Token' if user.blank?
-      raise 'Expired Confirmation Token' if user.confirmation_sent < Date.today - 2.weeks
+      return false, 'Invalid Confirmation Token' if user.blank?
+      return false, 'Expired Confirmation Token' if user.confirmation_sent < Date.today - 2.weeks
       user.confirmed = true
-      user.save
-      user
+      if user.save
+        return true, "Email Confirmed"
+      end
     end
     def authenticate(password)
       return false if ::BCrypt::Password.new(self.password) != password

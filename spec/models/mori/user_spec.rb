@@ -155,23 +155,28 @@ module Mori
         @user = create(:mori_minimal_user)
       end
       it "should require a valid token" do
-        expect{User.confirm_email(@user.email, "tokentoken123")}.to raise_error
+        valid,message = User.confirm_email("tokentoken123")
+        valid.should eq false
+        message.should eq 'Invalid Confirmation Token'
       end
       it "should require the token to be recent" do
         token = @user.confirmation_token
         ::Timecop.freeze(Date.today + 3.weeks) do
-          expect {User.confirm_email(@user.email, token)}.to raise_error
+          valid,message = User.confirm_email(token)
+          valid.should eq false
+          message.should eq "Expired Confirmation Token"
         end
       end
       it "should set confirmed to true" do
-        user = User.confirm_email(@user.email, @user.confirmation_token)
-        user.confirmed.should eq true
+        valid, message = User.confirm_email(@user.confirmation_token)
+        valid.should eq true
+        message.should eq "Email Confirmed"
       end
     end
+
     #########################################
     # Emails sent from the model
     #########################################
-
     describe "should recieve an email for" do
       it "getting invited" do
         Mailer.should_receive(:invite_user).and_call_original

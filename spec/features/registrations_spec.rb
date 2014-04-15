@@ -29,4 +29,22 @@ describe "The registration process", :type => :feature do
     click_button 'Sign Up'
     current_path.should eq '/registrations'
   end
+  describe "confirming your email" do
+    before :each do
+      @user = create(:mori_minimal_user)
+    end
+    it "should confirm their email" do
+      visit "/registrations/confirmation?token=#{@user.confirmation_token}"
+      @user.reload.confirmed.should eq true
+      current_path.should eq Mori.configuration.dashboard_path
+    end
+    it "should redirect if confirmation is not found" do
+      visit "/registrations/confirmation?token=123123"
+      current_path.should eq root_path
+    end
+    it "should redirect if no confirmation token" do
+      visit "/registrations/confirmation"
+      current_path.should eq root_path
+    end
+  end
 end
