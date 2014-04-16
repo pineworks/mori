@@ -1,0 +1,11 @@
+<ul class="mori-links">
+  <% if controller_name != 'sessions' %>
+    <li><%= link_to "Sign In", new_session_path %></li>
+  <% end %>
+  <% if controller_name != 'registrations' %>
+    <li><%= link_to "Sign Up", new_registration_path %></li>
+  <% end %>
+  <% if controller_name != 'passwords' && controller_name != 'registrations' %>
+    <li><%= link_to "Forgot your password?", forgot_passwords_path %></li>
+  <% end %>
+</ul>

@@ -36,3 +36,16 @@ body {
   color:#FFF;
   background-color:#4A89DC;
 }
+.mori-links {
+
+  display: -webkit-flex;
+  list-style:none;
+  padding:15px 0 0;
+  margin:0;
+  width:100%;
+  clear:both;
+}
+.mori-links li {
+  -webkit-flex: 1 0 0px;
+  text-align:center;
+}
