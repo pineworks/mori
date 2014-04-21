@@ -4,7 +4,7 @@ gemspec
 
 gem 'rspec-rails'
 gem 'coveralls', require: false
-gem 'pg'
+gem 'sqlite3'
 gem 'shoulda-matchers'
 gem 'timecop'
 gem 'capybara'

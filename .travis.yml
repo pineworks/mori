@@ -1,20 +1,14 @@
 language: ruby
-services: postgresql
 before_install:
   - gem install bundler -v '>= 1.5.1'
 rvm:
   - 1.9.3
   - 2.0.0
   - 2.1.0
-env:
-  - DB=postgresql
 gemfile:
   - Gemfile
 notifications:
   email: false
-before_script:
-  - cp config/database.travis.yml spec/dummy/config/database.yml
-  - psql -c 'create database mori_test' -U postgres
 script:
   - RAILS_ENV=test bundle exec rake app:db:test:prepare --trace
   - bundle exec rspec spec

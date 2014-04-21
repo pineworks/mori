@@ -11,11 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140209071716) do
-
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-  enable_extension "hstore"
+ActiveRecord::Schema.define(version: 20140421045106) do
 
   create_table "users", force: true do |t|
     t.string   "email"
@@ -27,13 +23,10 @@ ActiveRecord::Schema.define(version: 20140209071716) do
     t.boolean  "confirmed"
     t.string   "confirmation_token"
     t.datetime "confirmation_sent"
-    t.integer  "group_id"
-    t.hstore   "data",                 default: ""
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", using: :btree
-  add_index "users", ["group_id"], name: "index_users_on_group_id", using: :btree
+  add_index "users", ["email"], name: "index_users_on_email"
 
 end

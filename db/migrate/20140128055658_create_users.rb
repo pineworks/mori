@@ -1,6 +1,6 @@
-class CreateMoriUsers < ActiveRecord::Migration
+class CreateUsers < ActiveRecord::Migration
   def change
-    create_table :mori_users do |t|
+    create_table :users do |t|
 
       t.string :email
       t.text :password
@@ -18,16 +18,12 @@ class CreateMoriUsers < ActiveRecord::Migration
       t.string :confirmation_token
       t.datetime :confirmation_sent
 
-      # Group Relation
-      t.integer :group_id
-
-      # Application specific attributes
-      t.hstore :data, :default => {}
+      # Using Postgres?
+      # t.hstore :data, :default => {}
 
       t.timestamps
 
     end
-    add_index :mori_users, :email
-    add_index :mori_users, :group_id
+    add_index :users, :email
   end
 end
