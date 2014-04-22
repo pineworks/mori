@@ -8,7 +8,7 @@ Warden::Manager.serialize_into_session do |user|
 end
 
 Warden::Manager.serialize_from_session do |id|
-  Mori::User.find(id)
+  Mori.configuration.user_model.find(id)
 end
 
 Warden::Strategies.add(:password) do

@@ -9,12 +9,12 @@ class Mori::PasswordsController < MoriController
   end
   def reset
     redirect_to root_path unless params[:token]
-    @user = Mori::User.find_by_password_reset_token(params[:token])
+    @user = Mori.configuration.user_model.find_by_password_reset_token(params[:token])
     redirect_to root_path unless @user
   end
   def send_reset
     # Send Password Reset to User
-    unless Mori::User.forgot_password(params[:email])
+    unless Mori.configuration.user_model.forgot_password(params[:email])
       render :forgot
     end
   end
@@ -30,7 +30,7 @@ class Mori::PasswordsController < MoriController
     end
   end
   def reset_password
-    valid, message = Mori::User.reset_password(user_params[:password_reset_token],user_params[:password], user_params[:password_confirmation])
+    valid, message = Mori.configuration.user_model.reset_password(user_params[:password_reset_token],user_params[:password], user_params[:password_confirmation])
     if valid
       warden.authenticate!
       redirect_to Mori.configuration.after_login_url, notice: t('flashes.password_has_been_reset')

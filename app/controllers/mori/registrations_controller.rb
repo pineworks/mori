@@ -3,11 +3,11 @@ class Mori::RegistrationsController < MoriController
     if current_user
       redirect_to Mori.configuration.after_login_url
     end
-    @user = Mori::User.new
+    @user = Mori.configuration.user_model.new
   end
 
   def create
-    @user = Mori::User.new(user_params)
+    @user = Mori.configuration.user_model.new(user_params)
     if @user.save
       warden.set_user(@user)
       redirect_to Mori.configuration.after_signup_url
@@ -19,7 +19,7 @@ class Mori::RegistrationsController < MoriController
 
   def confirmation
     if params[:token]
-      valid, message = Mori::User.confirm_email(params[:token])
+      valid, message = Mori.configuration.user_model.confirm_email(params[:token])
       if valid
         flash[:notice] = message
         redirect_to Mori.configuration.dashboard_path
@@ -34,6 +34,6 @@ class Mori::RegistrationsController < MoriController
   private
 
   def user_params
-    params.require(:mori_user).permit(:username, :email, :password)
+    params.require(:user).permit(:username, :email, :password)
   end
 end

@@ -24,25 +24,25 @@ describe "Password Management", :type => :feature do
       page.has_content?('Reset My Password').should be true
     end
     it "should change a users password when they go to the link from the email" do
-      Mori::User.forgot_password(@user.email)
-      user = Mori::User.find_by_email(@user.email)
+      Mori.configuration.user_model.forgot_password(@user.email)
+      user = Mori.configuration.user_model.find_by_email(@user.email)
       visit "/passwords/reset?token=#{user.password_reset_token}"
-      within ".edit_mori_user" do
-        fill_in 'mori_user_password', :with => 'password123'
-        fill_in 'mori_user_password_confirmation', :with => 'password123'
+      within ".edit_user" do
+        fill_in 'user_password', :with => 'password123'
+        fill_in 'user_password_confirmation', :with => 'password123'
       end
       click_button "Update Password"
       page.current_path.should eq Mori.configuration.after_login_url
     end
     it "should render the reset form again if the change failed" do
       Timecop.freeze(Date.today - 3.weeks) do
-        Mori::User.forgot_password(@user.email)
+        Mori.configuration.user_model.forgot_password(@user.email)
       end
-      user = Mori::User.find_by_email(@user.email)
+      user = Mori.configuration.user_model.find_by_email(@user.email)
       visit "/passwords/reset?token=#{user.password_reset_token}"
-      within ".edit_mori_user" do
-        fill_in 'mori_user_password', :with => 'password123'
-        fill_in 'mori_user_password_confirmation', :with => 'password123'
+      within ".edit_user" do
+        fill_in 'user_password', :with => 'password123'
+        fill_in 'user_password_confirmation', :with => 'password123'
       end
       click_button "Update Password"
       page.has_content?('Expired Reset Token').should be true
@@ -67,7 +67,7 @@ describe "Password Management", :type => :feature do
         fill_in 'new_password_confirmation', :with => new_pass
       end
       click_button "Change Password"
-      ::BCrypt::Password.new(Mori::User.find(@user.id).password).should eq new_pass
+      ::BCrypt::Password.new(Mori.configuration.user_model.find(@user.id).password).should eq new_pass
       current_path.should eq Mori.configuration.after_password_change_url
     end
     it "should fail if the current password is not correct" do

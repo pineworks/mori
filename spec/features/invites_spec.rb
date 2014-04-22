@@ -31,7 +31,7 @@ describe "Inviting Users", :type => :feature do
   end
   describe "Accepting an invite" do
     before(:each) do
-      valid, @invited = Mori::User.invite('new_email@email.com')
+      valid, @invited = Mori.configuration.user_model.invite('new_email@email.com')
     end
     it "should redirect to the homepage if the invite token is not found" do
       visit "/invites/asd234fdsasd234"
@@ -39,8 +39,8 @@ describe "Inviting Users", :type => :feature do
     end
     it "should redirect to the invites path if validation fails" do
       visit "/invites/#{@invited.invitation_token}"
-      Mori::User.should_receive(:accept_invitation).exactly(1).times.and_call_original
-      within(:css, ".edit_mori_user") do
+      User.should_receive(:accept_invitation).exactly(1).times.and_call_original
+      within(:css, ".edit_user") do
         fill_in "Password", :with => "passwoasdfasdfasdasdf"
         fill_in "Password confirmation", :with => "password123"
       end
@@ -50,8 +50,8 @@ describe "Inviting Users", :type => :feature do
     end
     it "should accept the invite and log the new user in" do
       visit "/invites/#{@invited.invitation_token}"
-      Mori::User.should_receive(:accept_invitation).exactly(1).times.and_call_original
-      within(:css, ".edit_mori_user") do
+      User.should_receive(:accept_invitation).exactly(1).times.and_call_original
+      within(:css, ".edit_user") do
         fill_in "Password", :with => "password123"
         fill_in "Password confirmation", :with => "password123"
       end

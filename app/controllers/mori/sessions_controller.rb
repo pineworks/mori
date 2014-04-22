@@ -1,7 +1,7 @@
 class Mori::SessionsController < MoriController
   def new
     redirect_to Mori.configuration.after_login_url if current_user
-    @user = Mori::User.new
+    @user = Mori.configuration.user_model.new
     flash.now.alert = warden.message if warden.message.present?
   end
 

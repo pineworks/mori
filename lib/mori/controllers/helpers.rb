@@ -22,8 +22,8 @@ module Mori::Controllers::Helpers
       end
 
       def user_params
-        if params[:mori_user].present?
-          params[:mori_user]
+        if params[:user].present?
+          params[:user]
         end
       end
 end

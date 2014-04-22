@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "The registration process", :type => :feature do
   it "should be able to register" do
     visit '/sign_up'
-    within('#new_mori_user') do
+    within('#new_user') do
       fill_in 'Email', :with => Faker::Internet.email
       fill_in 'Password', :with => "imapassword123"
     end
@@ -12,7 +12,7 @@ describe "The registration process", :type => :feature do
   end
   it "should redirect them if already signed up" do
     visit '/sign_up'
-    within '#new_mori_user' do
+    within '#new_user' do
       fill_in 'Email', :with => Faker::Internet.email
       fill_in 'Password', :with => 'password123'
     end
@@ -22,7 +22,7 @@ describe "The registration process", :type => :feature do
   end
   it "should not allow invalid credentials" do
     visit '/sign_up'
-    within('#new_mori_user') do
+    within('#new_user') do
       fill_in 'Email', :with => "namenamename"
       fill_in 'Password', :with => "imapassword123"
     end

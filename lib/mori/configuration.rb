@@ -10,7 +10,8 @@ module Mori
       :after_logout_url,
       :after_password_change_url,
       :after_invite_url,
-      :dashboard_path
+      :dashboard_path,
+      :user_model
 
     def initialize
       @from_email  = "noreply@example.com"
@@ -25,6 +26,9 @@ module Mori
     end
     def allow_sign_up?
       allow_sign_up
+    end
+    def user_model
+      @user_model || ::User
     end
   end
 
