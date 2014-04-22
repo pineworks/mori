@@ -13,20 +13,20 @@
 
 ActiveRecord::Schema.define(version: 20140421045106) do
 
-  create_table "users", force: true do |t|
-    t.string   "email"
-    t.text     "password"
-    t.string   "invitation_token"
-    t.datetime "invitation_sent"
-    t.string   "password_reset_token"
-    t.datetime "password_reset_sent"
-    t.boolean  "confirmed"
-    t.string   "confirmation_token"
-    t.datetime "confirmation_sent"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table 'users', force: true do |t|
+    t.string   'email'
+    t.text     'password'
+    t.string   'invitation_token'
+    t.datetime 'invitation_sent'
+    t.string   'password_reset_token'
+    t.datetime 'password_reset_sent'
+    t.boolean  'confirmed'
+    t.string   'confirmation_token'
+    t.datetime 'confirmation_sent'
+    t.datetime 'created_at'
+    t.datetime 'updated_at'
   end
 
-  add_index "users", ["email"], name: "index_users_on_email"
+  add_index 'users', ['email'], name: 'index_users_on_email'
 
 end
