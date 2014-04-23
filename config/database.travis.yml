@@ -1,9 +1,5 @@
 test:
-  adapter: postgresql
-  username: postgres
-  password:
-  database: mori_test
-  min_messages: ERROR
+  adapter: sqlite3
+  database: db/test.sqlite3
   pool: 5
   timeout: 5000
-  host: localhost
