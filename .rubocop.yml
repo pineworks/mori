@@ -6,4 +6,4 @@ AllCops:
   Exclude:
     - db/**/*
     - config/**/*
-    - spec/dummy/**/*
+    - spec/**/*

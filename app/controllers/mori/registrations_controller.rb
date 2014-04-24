@@ -1,8 +1,6 @@
 class Mori::RegistrationsController < MoriController
   def new
-    if current_user
-      redirect_to Mori.configuration.after_login_url
-    end
+    redirect_to Mori.configuration.after_login_url if current_user
     @user = Mori.configuration.user_model.new
   end
 
@@ -12,25 +10,22 @@ class Mori::RegistrationsController < MoriController
       warden.set_user(@user)
       redirect_to Mori.configuration.after_signup_url
     else
-      flash[:notice] = @user.errors.map { |k,v| "#{k} #{v}"}.join(' and ').humanize
-      render "new"
+      flash[:notice] = @user.errors.map { |k, v| "#{k} #{v}" }.join(' and ').humanize
+      render 'new'
     end
   end
 
   def confirmation
-    if params[:token]
-      valid, message = Mori.configuration.user_model.confirm_email(params[:token])
-      if valid
-        flash[:notice] = message
-        redirect_to Mori.configuration.dashboard_path
-      else
-        flash[:notice] = message
-        redirect_to root_path
-      end
+    valid, message = Mori.configuration.user_model.confirm_email(params[:token])
+    if valid
+      flash[:notice] = message
+      redirect_to Mori.configuration.dashboard_path
     else
-      redirect_to root_path unless params[:token]
+      flash[:notice] = message
+      redirect_to root_path
     end
   end
+
   private
 
   def user_params

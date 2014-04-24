@@ -6,14 +6,17 @@ class String
   def encrypt
     Password.create(self, :cost => cost)
   end
+
   def normalize
-    self.remove_whitespace.downcase
+    remove_whitespace.downcase
   end
+
   def remove_whitespace
-   self.gsub(/\s+/, '')
+    gsub(/\s+/, '')
   end
 
   private
+
   def cost
     ::BCrypt::Engine::DEFAULT_COST
   end

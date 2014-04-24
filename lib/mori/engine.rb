@@ -1,8 +1,7 @@
 module Mori
   class Engine < ::Rails::Engine
-
     config.generators do |g|
-      g.test_framework      :rspec,        :fixture => false
+      g.test_framework :rspec, :fixture => false
       g.fixture_replacement :factory_girl, :dir => 'spec/factories'
       g.assets false
       g.helper false
@@ -10,7 +9,7 @@ module Mori
 
     initializer 'mori.controller' do |app|
       ActiveSupport.on_load(:action_controller) do
-         include Mori::Controllers::Helpers
+        include Mori::Controllers::Helpers
       end
     end
 

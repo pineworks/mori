@@ -20,9 +20,7 @@ module Mori
         return false, 'Invalid Confirmation Token' if user.blank?
         return false, 'Expired Confirmation Token' if user.confirmation_sent < Date.today - 2.weeks
         user.confirmed = true
-        if user.save
-          return true, "Email Confirmed"
-        end
+        return true, 'Email Confirmed' if user.save
       end
 
       def accept_invitation(token, password, password_confirmation)
@@ -33,7 +31,7 @@ module Mori
         return true, I18n.t('flashes.logged_in') if user.save
       end
 
-      def reset_password(token,new_password,confirmation)
+      def reset_password(token, new_password, confirmation)
         user = find_by_password_reset_token(token)
         return false, 'Passwords do not match' if new_password != confirmation
         return false, 'Invalid Password Reset Token' unless token == user.password_reset_token
@@ -43,7 +41,10 @@ module Mori
       end
 
       def invite(email)
-        user = create({:email => email, :invitation_token => Token.new, :invitation_sent => Date.today})
+        user = create(
+          :email => email,
+          :invitation_token => Token.new,
+          :invitation_sent => Date.today)
         if user.save
           Mori::Mailer.invite_user(user)
           return true, user
@@ -66,9 +67,9 @@ module Mori
       extend ActiveSupport::Concern
 
       included do
-        before_save :encrypt_password, :if => Proc.new { |user| user.password_changed? }
-        before_validation :normalize_email, :if => Proc.new{ |user| user.email_changed? }
-        before_create :send_email_confirmation, :if => Proc.new { |user| user.password.present? }
+        before_save :encrypt_password, :if => proc { |user| user.password_changed? }
+        before_validation :normalize_email, :if => proc { |user| user.email_changed? }
+        before_create :send_email_confirmation, :if => proc { |user| user.password.present? }
       end
     end
 

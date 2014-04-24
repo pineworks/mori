@@ -7,7 +7,7 @@ class Mori::SessionsController < MoriController
 
   def create
     warden.authenticate!
-    redirect_to Mori.configuration.after_login_url, notice: "You have logged in"
+    redirect_to Mori.configuration.after_login_url, :notice => 'You have logged in'
   end
 
   def destroy
