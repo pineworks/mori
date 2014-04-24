@@ -22,7 +22,7 @@ class Mori::PasswordsController < MoriController
 
   def update
     # Update their password
-    valid, message = current_user.change_password( params[:password], params[:new_password], params[:new_password_confirmation])
+    valid, message = current_user.change_password(params[:password], params[:new_password], params[:new_password_confirmation])
     if valid
       flash[:notice] = t('flashes.password_changed_successfully')
       redirect_to Mori.configuration.after_password_change_url
