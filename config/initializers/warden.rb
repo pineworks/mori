@@ -8,17 +8,17 @@ Warden::Manager.serialize_into_session do |user|
 end
 
 Warden::Manager.serialize_from_session do |id|
-  Mori::User.find(id)
+  Mori.configuration.user_model.find(id)
 end
 
 Warden::Strategies.add(:password) do
   def valid?
-    params['mori_user'].present? and params['mori_user']['email'] and params['mori_user']['password']
+    params['user'].present? and params['user']['email'] and params['user']['password']
   end
 
   def authenticate!
-    user = Mori::User.find_by_email(params['mori_user']['email'])
-    if user and user.authenticate(params['mori_user']['password'])
+    user = User.find_by_email(params['user']['email'])
+    if user and user.authenticate(params['user']['password'])
       success! user
     else
       fail! "Invalid login credentials"

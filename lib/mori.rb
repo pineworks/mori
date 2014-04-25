@@ -1,4 +1,5 @@
 require 'warden'
+require 'mori/user'
 require 'mori/configuration'
 require 'mori/engine'
 require 'mori/string'

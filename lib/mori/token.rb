@@ -1,16 +1,7 @@
 module Mori
-  module Token
-    extend ActiveSupport::Concern
-
-    included do
-      generate_token 
-    end
-
-    module ClassMethods
-
-      def generate_token
-        SecureRandom.hex(25)
-      end
+  class Token
+    def self.new
+      SecureRandom.hex(20).encode('UTF-8')
     end
   end
 end
