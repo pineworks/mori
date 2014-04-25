@@ -6,24 +6,23 @@ class Mori::InvitesController < MoriController
   end
 
   def accept
-    valid, message = Mori.configuration.user_model.accept_invitation(user_params[:invitation_token], user_params[:password], user_params[:password_confirmation])
+    config = Mori.configuration
+    valid, message = config.user_model.accept_invitation(user_params[:invitation_token], user_params[:password], user_params[:password_confirmation])
+    flash[:notice] = message
     if valid
       warden.authenticate!
-      flash[:notice] = message
-      redirect_to Mori.configuration.dashboard_path
+      redirect_to config.dashboard_path
     else
-      flash[:notice] = message
       redirect_to invite_path(user_params[:invitation_token])
     end
   end
 
   def send_user
     valid, message = Mori.configuration.user_model.invite(params[:email])
+    flash[:notice] = message
     if valid
-      flash[:notice] = "An invite has been sent to #{params[:email]}"
       redirect_to Mori.configuration.after_invite_url
     else
-      flash[:notice] = message
       render :new
     end
   end
