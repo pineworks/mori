@@ -47,7 +47,7 @@ module Mori
           :invitation_sent => Date.today)
         if user.save
           Mori::Mailer.invite_user(user)
-          return true, "An invite has been sent to #{params[:email]}"
+          return true, "An invite has been sent to #{email}"
         else
           return false, I18n.t('flashes.could_not_invite_user')
         end
