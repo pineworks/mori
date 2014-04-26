@@ -14,6 +14,7 @@ require 'shoulda-matchers'
 require 'timecop'
 require 'bcrypt'
 require 'capybara/rspec'
+require 'database_cleaner'
 require 'helpers'
 
 # Coveralls!
@@ -36,4 +37,13 @@ RSpec.configure do |config|
   config.formatter = 'documentation'
 
   Timecop.safe_mode = true
+
+  DatabaseCleaner.strategy = :transaction
+  config.before(:each) do
+    DatabaseCleaner.start
+  end
+
+  config.after(:each) do
+    DatabaseCleaner.clean
+  end
 end

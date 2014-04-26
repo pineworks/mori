@@ -58,7 +58,7 @@ module Mori
         return false if user.blank?
         user.password_reset_token = Token.new
         user.password_reset_sent = Date.today
-        Mori::Mailer.password_reset_notification(user)
+        Mori::Mailer.forgot_password(user)
         user.save
       end
     end

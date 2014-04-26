@@ -1,13 +1,13 @@
 class Mori::SessionsController < MoriController
   def new
-    redirect_to Mori.configuration.after_login_url if current_user
+    redirect_to Mori.configuration.dashboard_path if current_user
     @user = Mori.configuration.user_model.new
     flash.now.alert = warden.message if warden.message.present?
   end
 
   def create
     warden.authenticate!
-    redirect_to Mori.configuration.after_login_url, :notice => 'You have logged in'
+    redirect_to Mori.configuration.dashboard_path, :notice => 'You have logged in'
   end
 
   def destroy

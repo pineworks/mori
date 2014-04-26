@@ -4,7 +4,7 @@ Rails.application.routes.draw do
       get :confirmation
     end
   end
-  resources :sessions, :controller => 'mori/sessions', :only => [:new, :create, :destroy]
+  resources :sessions, :controller => 'mori/sessions', :only => [:create]
   resources :passwords, :controller => 'mori/passwords', :only => [] do
     collection do
       get :forgot

@@ -1,1 +1,5 @@
-<h1> I'm the invitation email </h1>
+<p><%=t 'emails.invite.opening', :app_name => Mori.configuration.app_name %></p>
+
+<%= link_to invite_url(:id => @user.invitation_token), "Accept Invitation" %>
+
+<p><%=t 'emails.invite.closing' %></p>

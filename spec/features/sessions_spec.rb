@@ -7,12 +7,12 @@ describe 'Sessions controller', :type => :feature do
   end
   it 'should be able to log in' do
     log_in(@user.email, password)
-    current_path.should eq Mori.configuration.after_login_url
+    current_path.should eq Mori.configuration.dashboard_path
   end
   it 'should redirect to the after login url if already logged in' do
     log_in(@user.email, password)
     visit '/login'
-    current_path.should eq Mori.configuration.after_login_url
+    current_path.should eq Mori.configuration.dashboard_path
   end
   it 'should not log in with invalid credentials' do
     log_in(@user.email, 'imapassword!')

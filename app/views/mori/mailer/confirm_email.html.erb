@@ -1,1 +1,4 @@
-h1 Hilo
+<p><%=t 'emails.confirm.opening', :app_name => Mori.configuration.app_name %></p>
+<p><%=t 'emails.confirm.intro' %></p>
+<%= link_to('Confirm Your Email', confirmation_registrations_url(:token => @user.confirmation_token)) %>
+<p><%=t 'emails.confirm.closing', :app_name => Mori.configuration.app_name %></p>

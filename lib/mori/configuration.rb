@@ -2,25 +2,21 @@ module Mori
   class Configuration
     attr_accessor \
       :from_email,
-      :application_name,
+      :app_name,
       :account_database,
       :allow_sign_up,
       :after_signup_url,
-      :after_login_url,
       :after_logout_url,
-      :after_password_change_url,
       :after_invite_url,
       :dashboard_path,
       :user_model
 
     def initialize
       @from_email  = 'noreply@example.com'
-      @application_name = 'Mori'
+      @app_name = Rails.application.class.parent_name.humanize
       @allow_sign_up = true
       @after_signup_url = '/'
-      @after_login_url = '/'
       @after_logout_url = '/'
-      @after_password_change_url = '/'
       @after_invite_url = '/'
       @dashboard_path = '/'
     end

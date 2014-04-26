@@ -1,6 +1,6 @@
 class Mori::RegistrationsController < MoriController
   def new
-    redirect_to Mori.configuration.after_login_url if current_user
+    redirect_to Mori.configuration.dashboard_path if current_user
     @user = Mori.configuration.user_model.new
   end
 

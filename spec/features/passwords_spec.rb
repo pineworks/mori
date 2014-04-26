@@ -6,7 +6,7 @@ describe 'Password Management', :type => :feature do
   end
   describe 'Resetting/Forgetting your Password' do
     it 'when you submit a forgotten password' do
-      Mori::Mailer.should_receive(:password_reset_notification).exactly(1).times.and_call_original
+      Mori::Mailer.should_receive(:forgot_password).exactly(1).times.and_call_original
       visit '/passwords/forgot'
       within '#forgot_password_form' do
         fill_in 'email', :with => @user.email
@@ -32,7 +32,7 @@ describe 'Password Management', :type => :feature do
         fill_in 'user_password_confirmation', :with => 'password123'
       end
       click_button 'Update Password'
-      page.current_path.should eq Mori.configuration.after_login_url
+      page.current_path.should eq Mori.configuration.dashboard_path
     end
     it 'should render the reset form again if the change failed' do
       Timecop.freeze(Date.today - 3.weeks) do
@@ -68,7 +68,7 @@ describe 'Password Management', :type => :feature do
       end
       click_button 'Change Password'
       ::BCrypt::Password.new(Mori.configuration.user_model.find(@user.id).password).should eq new_pass
-      current_path.should eq Mori.configuration.after_password_change_url
+      current_path.should eq Mori.configuration.dashboard_path
     end
     it 'should fail if the current password is not correct' do
       log_in(@user.email, 'password123')

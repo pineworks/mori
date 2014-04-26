@@ -25,7 +25,7 @@ class Mori::PasswordsController < MoriController
     valid, message = current_user.change_password(params[:password], params[:new_password], params[:new_password_confirmation])
     if valid
       flash[:notice] = t('flashes.password_changed_successfully')
-      redirect_to Mori.configuration.after_password_change_url
+      redirect_to Mori.configuration.dashboard_path
     else
       flash[:notice] = message
       render :change
@@ -34,9 +34,10 @@ class Mori::PasswordsController < MoriController
 
   def reset_password
     valid, message = Mori.configuration.user_model.reset_password(user_params[:password_reset_token], user_params[:password], user_params[:password_confirmation])
+    flash[:notice] = message
     if valid
       warden.authenticate!
-      redirect_to Mori.configuration.after_login_url, :notice => t('flashes.password_has_been_reset')
+      redirect_to Mori.configuration.dashboard_path
     else
       flash[:notice] = message
       redirect_to "/passwords/reset?token=#{user_params[:password_reset_token]}"

@@ -26,6 +26,8 @@ module Dummy
 
     config.i18n.enforce_available_locales = false
 
+    config.action_mailer.default_url_options = { host: 'localhost' }
+
   end
 end
 

@@ -188,7 +188,7 @@ describe User do
     end
     it 'resetting their password' do
       user = create(:mori_minimal_user)
-      Mori::Mailer.should_receive(:password_reset_notification).and_call_original
+      Mori::Mailer.should_receive(:forgot_password).and_call_original
       User.forgot_password(user.email)
     end
     it 'confirming their email' do
