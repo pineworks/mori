@@ -1,11 +1,14 @@
 require 'email_validator'
 require 'mori/token'
+require 'mori/password'
 
 module Mori
   module User
     extend ActiveSupport::Concern
 
     included do
+      include Password
+
       include Validations
       include Callbacks
     end
@@ -104,11 +107,11 @@ module Mori
     end
 
     def encrypt_password
-      self.password = password.encrypt
+      self.password = encrypt(password)
     end
 
     def normalize_email
-      self.email = email.normalize
+      self.email = normalize(email)
     end
   end
 end

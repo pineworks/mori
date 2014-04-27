@@ -3,11 +3,9 @@ module Mori
     attr_accessor \
       :from_email,
       :app_name,
-      :account_database,
       :allow_sign_up,
-      :after_signup_url,
-      :after_logout_url,
-      :after_invite_url,
+      :after_sign_up_path,
+      :after_logout_path,
       :dashboard_path,
       :user_model
 
@@ -15,9 +13,8 @@ module Mori
       @from_email  = 'noreply@example.com'
       @app_name = Rails.application.class.parent_name.humanize
       @allow_sign_up = true
-      @after_signup_url = '/'
-      @after_logout_url = '/'
-      @after_invite_url = '/'
+      @after_sign_up_path = '/'
+      @after_logout_path = '/'
       @dashboard_path = '/'
     end
 

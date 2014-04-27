@@ -26,7 +26,7 @@ describe 'Inviting Users', :type => :feature do
         fill_in 'E-mail', :with => 'imanewemail@email.com'
         click_button 'Invite User'
       end
-      page.current_path.should eq Mori.configuration.after_invite_url
+      page.current_path.should eq Mori.configuration.dashboard_path
     end
   end
   describe 'Accepting an invite' do

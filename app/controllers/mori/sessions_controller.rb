@@ -12,6 +12,6 @@ class Mori::SessionsController < MoriController
 
   def destroy
     warden.logout
-    redirect_to Mori.configuration.after_logout_url
+    redirect_to Mori.configuration.after_logout_path
   end
 end

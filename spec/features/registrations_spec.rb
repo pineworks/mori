@@ -8,7 +8,7 @@ describe 'The registration process', :type => :feature do
       fill_in 'Password', :with => 'imapassword123'
     end
     click_button 'Sign Up'
-    current_path.should eq Mori.configuration.after_signup_url
+    current_path.should eq Mori.configuration.after_sign_up_path
   end
   it 'should redirect them if already signed up' do
     visit '/sign_up'
@@ -18,7 +18,7 @@ describe 'The registration process', :type => :feature do
     end
     click_button 'Sign Up'
     visit '/sign_up'
-    current_path.should eq Mori.configuration.after_signup_url
+    current_path.should eq Mori.configuration.after_sign_up_path
   end
   it 'should not allow invalid credentials' do
     visit '/sign_up'

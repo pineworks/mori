@@ -8,7 +8,7 @@ class Mori::RegistrationsController < MoriController
     @user = Mori.configuration.user_model.new(user_params)
     if @user.save
       warden.set_user(@user)
-      redirect_to Mori.configuration.after_signup_url
+      redirect_to Mori.configuration.after_sign_up_path
     else
       flash[:notice] = @user.errors.map { |k, v| "#{k} #{v}" }.join(' and ').humanize
       render 'new'

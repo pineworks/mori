@@ -1,3 +1,3 @@
-class MoriController < ActionController::Base
+class MoriController < ApplicationController
   layout 'mori/application'
 end
