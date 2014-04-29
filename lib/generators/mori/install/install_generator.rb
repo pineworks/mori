@@ -107,6 +107,24 @@ module Mori
       def file_does_not_contain?(file, text)
         File.readlines(file).grep(/#{text}/).none?
       end
+
+      def migration_exists?(name)
+        existing_migrations.include?(name)
+      end
+
+      def existing_migrations
+        @existing_migrations ||= Dir.glob("db/migrate/*.rb").map do |file|
+          migration_name_without_timestamp(file)
+        end
+      end
+
+      def migration_name_without_timestamp(file)
+        file.sub(%r{^.*(db/migrate/)(?:\d+_)?}, '')
+      end
+
+      def self.next_migration_number(dir)
+        ActiveRecord::Generators::Base.next_migration_number(dir)
+      end
     end
   end
 end
