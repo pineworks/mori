@@ -14,8 +14,13 @@ module Mori
     end
 
     module ClassMethods
+
       def find_by_normalized_email(email)
-        find_by_email(email.normalize)
+        find_by_email normalize_email(email)
+      end
+
+      def normalize_email(string)
+        string.gsub(/\s+/, '').downcase
       end
 
       def confirm_email(token)
@@ -35,7 +40,7 @@ module Mori
       end
 
       def reset_password(token, new_password, confirmation)
-        user = find_by_password_reset_token(token)
+        user = find_by_password_reset_token token
         return false, 'Passwords do not match' if new_password != confirmation
         return false, 'Invalid Password Reset Token' unless token == user.password_reset_token
         return false, 'Expired Reset Token' if user.password_reset_sent < Date.today - 2.weeks
@@ -100,6 +105,10 @@ module Mori
 
     private
 
+    def normalize_email
+      self.email = self.class.normalize_email(email)
+    end
+
     def send_email_confirmation
       self.confirmation_token = SecureRandom.hex(25)
       self.confirmation_sent = Date.today
@@ -110,8 +119,6 @@ module Mori
       self.password = encrypt(password)
     end
 
-    def normalize_email
-      self.email = normalize(email)
-    end
+
   end
 end

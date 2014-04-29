@@ -11,13 +11,6 @@ module Mori
     def compare_encrypted(string)
       ::BCrypt::Password.new(string)
     end
-    def normalize(string)
-      remove_whitespace(string).downcase
-    end
-
-    def remove_whitespace(string)
-      string.gsub(/\s+/, '')
-    end
 
     private
 

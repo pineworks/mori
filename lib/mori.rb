@@ -2,9 +2,8 @@ require 'warden'
 require 'mori/user'
 require 'mori/controller'
 require 'mori/configuration'
-require 'mori/engine'
-require 'mori/string'
 require 'mori/token'
+require 'mori/engine'
 
 module Mori
   def self.root
