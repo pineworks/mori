@@ -6,7 +6,7 @@ describe 'Password Management', :type => :feature do
   end
   describe 'Resetting/Forgetting your Password' do
     it 'when you submit a forgotten password' do
-      Mori::Mailer.should_receive(:forgot_password).exactly(1).times.and_call_original
+      MoriMailer.should_receive(:forgot_password).exactly(1).times.and_call_original
       visit '/passwords/forgot'
       within '#forgot_password_form' do
         fill_in 'email', :with => @user.email

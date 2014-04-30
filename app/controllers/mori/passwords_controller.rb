@@ -1,23 +1,36 @@
-class Mori::PasswordsController < MoriController
+class Mori::PasswordsController < Mori::BaseController
   before_filter :authenticate!, :only => :change
   def forgot
     # View for sending password reset
-    redirect_to Mori.configuration.dashboard_path if current_user
+    if current_user
+      redirect_to Mori.configuration.dashboard_path
+    else
+      render :template => 'passwords/forgot'
+    end
   end
 
   def change
     # View for change password
+    render :template => 'passwords/change'
   end
 
   def reset
     redirect_to root_path unless params[:token]
     @user = Mori.configuration.user_model.find_by_password_reset_token(params[:token])
-    redirect_to root_path unless @user
+    if @user
+      render :template => 'passwords/reset'
+    else
+      redirect_to root_path
+    end
   end
 
   def send_reset
     # Send Password Reset to User
-    render :forgot unless Mori.configuration.user_model.forgot_password(params[:email])
+    unless Mori.configuration.user_model.forgot_password(params[:email])
+      render :template => 'passwords/forgot'
+    else
+      render :template => 'passwords/send_reset'
+    end
   end
 
   def update
@@ -28,7 +41,7 @@ class Mori::PasswordsController < MoriController
       redirect_to Mori.configuration.dashboard_path
     else
       flash[:notice] = message
-      render :change
+      render :template => 'passwords/change'
     end
   end
 

@@ -54,7 +54,7 @@ module Mori
           :invitation_token => Token.new,
           :invitation_sent => Date.today)
         if user.save
-          Mori::Mailer.invite_user(user)
+          MoriMailer.invite_user(user)
           return true, "An invite has been sent to #{email}"
         else
           return false, I18n.t('flashes.could_not_invite_user')
@@ -66,7 +66,7 @@ module Mori
         return false if user.blank?
         user.password_reset_token = Token.new
         user.password_reset_sent = Date.today
-        Mori::Mailer.forgot_password(user)
+        MoriMailer.forgot_password(user)
         user.save
       end
     end
@@ -112,7 +112,7 @@ module Mori
     def send_email_confirmation
       self.confirmation_token = SecureRandom.hex(25)
       self.confirmation_sent = Date.today
-      Mori::Mailer.confirm_email(self)
+      MoriMailer.confirm_email(self)
     end
 
     def encrypt_password

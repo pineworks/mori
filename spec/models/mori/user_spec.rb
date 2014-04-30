@@ -183,16 +183,16 @@ describe User do
   #########################################
   describe 'should recieve an email for' do
     it 'getting invited' do
-      Mori::Mailer.should_receive(:invite_user).and_call_original
+      MoriMailer.should_receive(:invite_user).and_call_original
       User.invite(email)
     end
     it 'resetting their password' do
       user = create(:mori_minimal_user)
-      Mori::Mailer.should_receive(:forgot_password).and_call_original
+      MoriMailer.should_receive(:forgot_password).and_call_original
       User.forgot_password(user.email)
     end
     it 'confirming their email' do
-      Mori::Mailer.should_receive(:confirm_email).and_call_original
+      MoriMailer.should_receive(:confirm_email).and_call_original
       create(:mori_minimal_user)
     end
   end
