@@ -1,0 +1,12 @@
+Description:
+  This generator will install all of the Mori views into your application.
+  This will make it easier to override the default mori views
+
+Examples:
+    rails generate mori:views
+      View: app/views/invites/new.html.erb
+      View: app/views/invites/show.html.erb
+      View: app/views/passwords/change.html.erb
+      View: app/views/passwords/forgot.html.erb
+      View: app/views/passwords/reset.html.erb
+      View: app/views/passwords/send_reset.html.erb
