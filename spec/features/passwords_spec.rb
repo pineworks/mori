@@ -6,7 +6,7 @@ describe 'Password Management', :type => :feature do
   end
   describe 'Resetting/Forgetting your Password' do
     it 'when you submit a forgotten password' do
-      Mori::Mailer.should_receive(:forgot_password).exactly(1).times.and_call_original
+      MoriMailer.should_receive(:forgot_password).exactly(1).times.and_call_original
       visit '/passwords/forgot'
       within '#forgot_password_form' do
         fill_in 'email', :with => @user.email
@@ -50,6 +50,11 @@ describe 'Password Management', :type => :feature do
     it 'should redirect if no user is found' do
       visit '/passwords/reset?token=123asdf123'
       page.current_path.should eq root_path
+    end
+    it 'should redirect if I\'m already logged in' do
+      log_in(@user.email, 'password123')
+      visit '/passwords/forgot'
+      page.current_path.should eq Mori.configuration.dashboard_path
     end
   end
   describe 'Changing your Password' do

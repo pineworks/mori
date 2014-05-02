@@ -1,17 +1,21 @@
-class Mori::RegistrationsController < MoriController
+class Mori::RegistrationsController < Mori::BaseController
   def new
-    redirect_to Mori.configuration.dashboard_path if current_user
-    @user = Mori.configuration.user_model.new
+    if current_user
+      redirect_to Mori.configuration.dashboard_path
+    else
+      @user = Mori.configuration.user_model.new
+      render :template => 'registrations/new'
+    end
   end
 
   def create
     @user = Mori.configuration.user_model.new(user_params)
     if @user.save
       warden.set_user(@user)
-      redirect_to Mori.configuration.after_signup_url
+      redirect_to Mori.configuration.after_sign_up_path
     else
       flash[:notice] = @user.errors.map { |k, v| "#{k} #{v}" }.join(' and ').humanize
-      render 'new'
+      render :template => 'registrations/new'
     end
   end
 

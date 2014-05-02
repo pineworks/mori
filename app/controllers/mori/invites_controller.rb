@@ -1,8 +1,16 @@
-class Mori::InvitesController < MoriController
+class Mori::InvitesController < Mori::BaseController
   before_filter :authenticate!, :only => [:new, :send]
   def show
     @user = Mori.configuration.user_model.find_by_invitation_token(params[:id])
-    redirect_to root_url unless @user
+    if @user
+      render :template => 'invites/show'
+    else
+      redirect_to root_path
+    end
+  end
+
+  def new
+    render :template => 'invites/new'
   end
 
   def accept
@@ -21,9 +29,9 @@ class Mori::InvitesController < MoriController
     valid, message = Mori.configuration.user_model.invite(params[:email])
     flash[:notice] = message
     if valid
-      redirect_to Mori.configuration.after_invite_url
+      redirect_to Mori.configuration.dashboard_path
     else
-      render :new
+      render :template => 'invites/new'
     end
   end
 end

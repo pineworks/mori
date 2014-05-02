@@ -21,12 +21,12 @@ describe 'Inviting Users', :type => :feature do
     it 'should send an invite' do
       log_in(@user.email, 'password123')
       visit '/invites/new'
-      Mori::Mailer.should_receive(:invite_user).exactly(1).times
+      MoriMailer.should_receive(:invite_user).exactly(1).times
       within(:css, '#invite_new_user_form') do
         fill_in 'E-mail', :with => 'imanewemail@email.com'
         click_button 'Invite User'
       end
-      page.current_path.should eq Mori.configuration.after_invite_url
+      page.current_path.should eq Mori.configuration.dashboard_path
     end
   end
   describe 'Accepting an invite' do

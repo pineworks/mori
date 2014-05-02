@@ -1,8 +1,12 @@
-class Mori::SessionsController < MoriController
+class Mori::SessionsController < Mori::BaseController
   def new
-    redirect_to Mori.configuration.dashboard_path if current_user
-    @user = Mori.configuration.user_model.new
-    flash.now.alert = warden.message if warden.message.present?
+    if current_user
+      redirect_to Mori.configuration.dashboard_path
+    else
+      @user = Mori.configuration.user_model.new
+      flash.now.alert = warden.message if warden.message.present?
+      render :template => 'sessions/new'
+    end
   end
 
   def create
@@ -12,6 +16,6 @@ class Mori::SessionsController < MoriController
 
   def destroy
     warden.logout
-    redirect_to Mori.configuration.after_logout_url
+    redirect_to Mori.configuration.after_logout_path
   end
 end
