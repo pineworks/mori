@@ -51,6 +51,11 @@ describe 'Password Management', :type => :feature do
       visit '/passwords/reset?token=123asdf123'
       page.current_path.should eq root_path
     end
+    it 'should redirect if I\'m already logged in' do
+      log_in(@user.email, 'password123')
+      visit '/passwords/forgot'
+      page.current_path.should eq Mori.configuration.dashboard_path
+    end
   end
   describe 'Changing your Password' do
     it 'should require you to be logged in' do
