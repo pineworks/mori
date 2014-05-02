@@ -26,7 +26,7 @@ class Mori::PasswordsController < Mori::BaseController
 
   def send_reset
     # Send Password Reset to User
-    unless Mori.configuration.user_model.forgot_password(params[:email])
+    if !Mori.configuration.user_model.forgot_password(params[:email])
       render :template => 'passwords/forgot'
     else
       render :template => 'passwords/send_reset'
