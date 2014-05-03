@@ -7,7 +7,8 @@ module Mori
       :after_sign_up_path,
       :after_logout_path,
       :dashboard_path,
-      :user_model
+      :user_model,
+      :token_expiration
 
     def initialize
       @from_email  = 'noreply@example.com'
@@ -16,6 +17,7 @@ module Mori
       @after_sign_up_path = '/'
       @after_logout_path = '/'
       @dashboard_path = '/'
+      @token_expiration = 14
     end
 
     def allow_sign_up?

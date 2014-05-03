@@ -26,7 +26,7 @@ module Mori
       def confirm_email(token)
         user = find_by_confirmation_token(token)
         return false, 'Invalid Confirmation Token' if user.blank?
-        return false, 'Expired Confirmation Token' if user.confirmation_sent < Date.today - 2.weeks
+        return false, 'Expired Confirmation Token' if user.confirmation_sent < Date.today - Mori.configuration.token_expiration.days
         user.confirmed = true
         return true, 'Email Confirmed' if user.save
       end
@@ -34,7 +34,7 @@ module Mori
       def accept_invitation(token, password, password_confirmation)
         user = find_by_invitation_token(token)
         return false, I18n.t('flashes.passwords_dont_match') if password != password_confirmation
-        return false, 'Expired Invitation Token' if user.invitation_sent < Date.today - 2.weeks
+        return false, 'Expired Invitation Token' if user.invitation_sent < Date.today - Mori.configuration.token_expiration.days
         user.password = password
         return true, I18n.t('flashes.logged_in') if user.save
       end
@@ -43,7 +43,7 @@ module Mori
         user = find_by_password_reset_token token
         return false, 'Passwords do not match' if new_password != confirmation
         return false, 'Invalid Password Reset Token' unless token == user.password_reset_token
-        return false, 'Expired Reset Token' if user.password_reset_sent < Date.today - 2.weeks
+        return false, 'Expired Reset Token' if user.password_reset_sent < Date.today - Mori.configuration.token_expiration.days
         user.password = new_password
         user.save
       end
