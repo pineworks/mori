@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.email       = ["aaron@pineworks.io"]
   s.homepage    = "http://github.com/pineworks/mori"
   s.summary     = "Mori is a user authentication platform"
-  s.description = "Mori is a user authentication platform"
+  s.description = "Mori is a lightweight module based authentication platform. Mori uses Warden for session management, and is intended to be easy to overwrite, and configurable."
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 

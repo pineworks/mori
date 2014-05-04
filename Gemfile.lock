@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    mori (0.0.1)
+    mori (1.0.0.alpha)
       bcrypt-ruby
       email_validator
       rails (>= 3.2.0)
