@@ -10,6 +10,8 @@ spec/dummy/db/migrate/*
 database.yml
 *.DS_Store
 *.swp
+Gemfile.lock
 
 # Ignore Coverage Stuff
 coverage/*
+
