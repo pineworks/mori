@@ -15,6 +15,7 @@ gem 'factory_girl_rails'
 gem 'faker'
 gem 'selenium-webdriver'
 gem 'database_cleaner'
+gem 'jquery-rails'
 
 rails_version = ENV["RAILS_VERSION"] || "default"
 
