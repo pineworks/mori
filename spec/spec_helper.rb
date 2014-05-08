@@ -31,7 +31,7 @@ RSpec.configure do |config|
   config.include Helpers
 
   config.mock_with :rspec
-  config.use_transactional_fixtures = true
+  config.use_transactional_fixtures = false
   config.infer_base_class_for_anonymous_controllers = false
   config.order = 'random'
   config.formatter = 'documentation'
