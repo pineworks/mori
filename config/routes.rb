@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   end
   resources :invites, :controller => 'mori/invites', :only => [:show, :new] do
     collection do
-      patch :accept
+      put :accept
       post :send_user
     end
   end
