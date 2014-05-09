@@ -16,6 +16,7 @@ notifications:
 before_script:
   - cp config/database.travis.yml spec/dummy/config/database.yml
 script:
+  - bundle exec rake app:db:migrate
   - RAILS_ENV=test bundle exec rake app:db:test:prepare --trace
   - bundle exec rspec spec
 cache:
