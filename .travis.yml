@@ -15,7 +15,7 @@ notifications:
   email: false
 before_script:
   - cp config/database.travis.yml spec/dummy/config/database.yml
-  - mv config/token.travis.yml config/initializers/secret_token.rb
+  - mv config/token.travis.rb config/initializers/secret_token.rb
 script:
   - bundle exec rake app:db:migrate
   - RAILS_ENV=test bundle exec rake app:db:test:prepare --trace
