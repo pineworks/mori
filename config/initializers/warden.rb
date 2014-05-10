@@ -13,15 +13,18 @@ end
 
 Warden::Strategies.add(:password) do
   def valid?
-    params['user'].present? and params['user']['email'] and params['user']['password']
+    user_params.present? and user_params['email'] and user_params['password']
   end
 
   def authenticate!
-    user = User.find_by_email(params['user']['email'])
-    if user and user.authenticate(params['user']['password'])
+    user = User.find_by_email(user_params['email'])
+    if user and user.authenticate(user_params['password'])
       success! user
     else
       fail! "Invalid login credentials"
     end
+  end
+  def user_params
+    params['user']
   end
 end

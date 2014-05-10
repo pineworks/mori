@@ -1,3 +1,4 @@
+# Mori Configuration is for setting application wide settings
 module Mori
   class Configuration
     attr_accessor \

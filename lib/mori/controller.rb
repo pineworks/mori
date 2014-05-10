@@ -7,7 +7,7 @@ module Mori
     end
 
     def signed_in?
-      !current_user.nil?
+      current_user.preset?
     end
 
     def current_user

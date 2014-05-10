@@ -1,3 +1,4 @@
+# MoriMailer sends Forgot Passwords, User Invitations, and Confirmation Emails
 class MoriMailer < ActionMailer::Base
   default :from => Mori.configuration.from_email
 

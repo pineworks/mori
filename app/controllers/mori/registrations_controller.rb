@@ -1,9 +1,10 @@
+# Mori::RegistrationsController is responsible for signing up new users
 class Mori::RegistrationsController < Mori::BaseController
   def new
     if current_user
-      redirect_to Mori.configuration.dashboard_path
+      redirect_to @config.dashboard_path
     else
-      @user = Mori.configuration.user_model.new
+      @user = @config.user_model.new
       render :template => 'registrations/new'
     end
   end
@@ -11,21 +12,20 @@ class Mori::RegistrationsController < Mori::BaseController
   def create
     @user = user_from_params
     if @user.save
-      warden.set_user(@user)
-      redirect_to Mori.configuration.after_sign_up_path
+      warden.authenticate!
+      redirect_to @config.after_sign_up_path
     else
-      flash[:notice] = @user.errors.map { |k, v| "#{k} #{v}" }.join(' and ').humanize
+      flash[:notice] = @user.errors.map { |key, val| "#{key} #{val}" }.join(' and ').humanize
       render :template => 'registrations/new'
     end
   end
 
   def confirmation
-    valid, message = Mori.configuration.user_model.confirm_email(params[:token])
+    valid, message = @config.user_model.confirm_email(params[:token])
+    flash[:notice] = message
     if valid
-      flash[:notice] = message
-      redirect_to Mori.configuration.dashboard_path
+      redirect_to @config.dashboard_path
     else
-      flash[:notice] = message
       redirect_to root_path
     end
   end
@@ -36,7 +36,7 @@ class Mori::RegistrationsController < Mori::BaseController
     email = user_params.delete(:email)
     password = user_params.delete(:password)
 
-    Mori.configuration.user_model.new().tap do |user|
+    @config.user_model.new().tap do |user|
       user.email = email
       user.password = password
     end

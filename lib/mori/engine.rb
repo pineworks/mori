@@ -1,10 +1,10 @@
 module Mori
   class Engine < ::Rails::Engine
-    config.generators do |g|
-      g.test_framework :rspec, :fixture => false
-      g.fixture_replacement :factory_girl, :dir => 'spec/factories'
-      g.assets false
-      g.helper false
+    config.generators do |gen|
+      gen.test_framework :rspec, :fixture => false
+      gen.fixture_replacement :factory_girl, :dir => 'spec/factories'
+      gen.assets false
+      gen.helper false
     end
 
     initializer 'mori.filter' do |app|

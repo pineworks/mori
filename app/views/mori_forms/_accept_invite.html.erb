@@ -1,7 +1,7 @@
 <%= form_for @user, :url => accept_invites_path, :method => :put, :id => 'accept_invites_form', :class => 'mori_form' do |f| %>
   <h3 class="form-title">Accept Invitation</h3>
   <h4><%= flash[:notice] %></h4>
-    <%= f.hidden_field :invitation_token %>
+    <%= f.hidden_field :token, :value => @user.invitation_token %>
     <%= f.hidden_field :email %>
   <div class="form-group">
     <%= f.label :password %>

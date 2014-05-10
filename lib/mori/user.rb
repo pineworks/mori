@@ -92,15 +92,18 @@ module Mori
     end
 
     def change_password(password, new_password, confirm)
-      return false, I18n.t('flashes.password_change_failed') if ::BCrypt::Password.new(self.password) != password
-      return false, I18n.t('flashes.passwords_did_not_match') if new_password != confirm
-      self.password = new_password
-      save
+      if ::BCrypt::Password.new(self.password) != password
+        return false, I18n.t('flashes.password_change_failed')
+      elsif new_password != confirm
+        return false, I18n.t('flashes.passwords_did_not_match')
+      else
+        self.password = new_password
+        save
+      end
     end
 
     def authenticate(password)
-      return false if ::BCrypt::Password.new(self.password) != password
-      true
+      ::BCrypt::Password.new(self.password) == password
     end
 
     private

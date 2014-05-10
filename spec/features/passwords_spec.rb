@@ -47,6 +47,10 @@ describe 'Password Management', :type => :feature do
       click_button 'Update Password'
       page.has_content?('Expired Reset Token').should be true
     end
+    it 'should redirect if no token' do
+      visit '/passwords/reset'
+      page.current_path.should eq root_path
+    end
     it 'should redirect if no user is found' do
       visit '/passwords/reset?token=123asdf123'
       page.current_path.should eq root_path
