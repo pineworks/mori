@@ -9,7 +9,7 @@ class Mori::RegistrationsController < Mori::BaseController
   end
 
   def create
-    @user = Mori.configuration.user_model.new(user_params)
+    @user = user_from_params
     if @user.save
       warden.set_user(@user)
       redirect_to Mori.configuration.after_sign_up_path
@@ -32,7 +32,17 @@ class Mori::RegistrationsController < Mori::BaseController
 
   private
 
+  def user_from_params
+    email = user_params.delete(:email)
+    password = user_params.delete(:password)
+
+    Mori.configuration.user_model.new().tap do |user|
+      user.email = email
+      user.password = password
+    end
+  end
+
   def user_params
-    params.require(:user).permit(:username, :email, :password)
+    params[:user] || Hash.new
   end
 end

@@ -20,6 +20,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'bcrypt-ruby'
   s.add_dependency 'email_validator'
   s.add_dependency 'warden'
-  s.add_dependency 'rails', '>= 3.2.0'
+  s.add_dependency 'railties', '>= 3.2.0'
 
 end
