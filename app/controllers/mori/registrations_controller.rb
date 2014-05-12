@@ -21,11 +21,13 @@ class Mori::RegistrationsController < Mori::BaseController
   end
 
   def confirmation
-    valid, message = @config.user_model.confirm_email(params[:token])
-    flash[:notice] = message
-    if valid
+    user = @config.user_model.find_by_confirmation_token(@token)
+    if confirmation_conditions(user)
+      user.confirm_email
+      flash[:notice] = I18n.t('flashes.email_confirmed')
       redirect_to @config.dashboard_path
     else
+      flash[:notice] = I18n.t('flashes.invalid_confirmation_token')
       redirect_to root_path
     end
   end
@@ -44,5 +46,9 @@ class Mori::RegistrationsController < Mori::BaseController
 
   def user_params
     params[:user] || Hash.new
+  end
+
+  def confirmation_conditions(user)
+    !user.nil? and user.confirmation_sent > expiration_date
   end
 end

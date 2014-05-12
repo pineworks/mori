@@ -81,18 +81,8 @@ describe User do
         @user = User.find_by_email(email)
       end
       it 'should set their password' do
-        User.accept_invitation(@user.invitation_token, password, password)
+        @user.accept_invitation(password)
         @user.reload.password.should_not eq password
-      end
-      it 'should not be able to use a stale token' do
-        Timecop.freeze(Date.today + 3.weeks) do
-          valid, message = User.accept_invitation(
-            @user.invitation_token,
-            password,
-            password)
-          valid.should eq false
-          message.should eq 'Expired Invitation Token'
-        end
       end
     end
   end
@@ -103,26 +93,16 @@ describe User do
   describe 'Resetting their password' do
     before(:each) do
       @user = create(:mori_minimal_user)
-      User.forgot_password(@user.email)
-      @user = User.find_by_email('email@example.com')
+      @user.forgot_password
+      @user = User.find_by_email(@user.email)
     end
     it 'should be able to reset password' do
       @user.password_reset_token.should_not be nil
       @user.password_reset_sent.should eq Date.today
     end
-    it 'should require a valid reset token' do
-      expect { User.reset_password('token123', password) }.to raise_error
-      token = @user.password_reset_token
-      User.reset_password(token, password, password)
-      ::BCrypt::Password.new(@user.reload.password).should eq password
-    end
-    it 'should not be able to use an old token' do
-      token = @user.password_reset_token
-      ::Timecop.freeze(Date.today + 3.weeks) do
-        valid, message = User.reset_password(token, password, password)
-        valid.should eq false
-        message.should eq 'Expired Reset Token'
-      end
+    it 'should change their password' do
+      @user.reset_password("password123")
+      ::BCrypt::Password.new(@user.reload.password).should eq "password123"
     end
   end
 
@@ -135,18 +115,8 @@ describe User do
       @user = create(:mori_minimal_user)
     end
     it 'should be able to change their password' do
-      @user.change_password('123456789sdf', password2, password2)
+      @user.change_password(password2)
       ::BCrypt::Password.new(@user.reload.password).should eq password2
-    end
-    it 'should return false if both new passwords don\'t match' do
-      valid, message = @user.change_password('123456789sdf', password2, 'potato')
-      valid.should eq false
-      message.should eq I18n.t('flashes.passwords_did_not_match')
-    end
-    it 'should raise an error if the incorrect password is provided' do
-      valid, message = @user.change_password(password2, password, password)
-      valid.should eq false
-      message.should eq I18n.t('flashes.password_change_failed')
     end
   end
 
@@ -158,23 +128,9 @@ describe User do
     before :each do
       @user = create(:mori_minimal_user)
     end
-    it 'should require a valid token' do
-      valid, message = User.confirm_email('tokentoken123')
-      valid.should eq false
-      message.should eq 'Invalid Confirmation Token'
-    end
-    it 'should require the token to be recent' do
-      token = @user.confirmation_token
-      ::Timecop.freeze(Date.today + 3.weeks) do
-        valid, message = User.confirm_email(token)
-        valid.should eq false
-        message.should eq 'Expired Confirmation Token'
-      end
-    end
     it 'should set confirmed to true' do
-      valid, message = User.confirm_email(@user.confirmation_token)
-      valid.should eq true
-      message.should eq 'Email Confirmed'
+      @user.confirm_email
+      @user.reload.confirmed.should eq true
     end
   end
 
@@ -189,7 +145,7 @@ describe User do
     it 'resetting their password' do
       user = create(:mori_minimal_user)
       MoriMailer.should_receive(:forgot_password).and_call_original
-      User.forgot_password(user.email)
+      user.forgot_password
     end
     it 'confirming their email' do
       MoriMailer.should_receive(:confirm_email).and_call_original

@@ -24,7 +24,7 @@ describe 'Password Management', :type => :feature do
       page.has_content?('Reset My Password').should be true
     end
     it 'should change a users password when they go to the link from the email' do
-      Mori.configuration.user_model.forgot_password(@user.email)
+      @user.forgot_password
       user = Mori.configuration.user_model.find_by_email(@user.email)
       visit "/passwords/reset?token=#{user.password_reset_token}"
       within '.edit_user' do
@@ -36,7 +36,7 @@ describe 'Password Management', :type => :feature do
     end
     it 'should render the reset form again if the change failed' do
       Timecop.freeze(Date.today - 3.weeks) do
-        Mori.configuration.user_model.forgot_password(@user.email)
+        @user.forgot_password
       end
       user = Mori.configuration.user_model.find_by_email(@user.email)
       visit "/passwords/reset?token=#{user.password_reset_token}"
@@ -45,7 +45,7 @@ describe 'Password Management', :type => :feature do
         fill_in 'user_password_confirmation', :with => 'password123'
       end
       click_button 'Update Password'
-      page.has_content?('Expired Reset Token').should be true
+      page.has_content?(I18n.t('flashes.invalid_password_reset_token')).should be true
     end
     it 'should redirect if no token' do
       visit '/passwords/reset'
@@ -99,7 +99,7 @@ describe 'Password Management', :type => :feature do
         fill_in 'new_password_confirmation', :with => 'potatwo'
       end
       click_button 'Change Password'
-      page.has_content?(I18n.t('flashes.passwords_did_not_match')).should be true
+      page.has_content?(I18n.t('flashes.password_change_failed')).should be true
     end
   end
 end

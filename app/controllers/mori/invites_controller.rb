@@ -15,12 +15,13 @@ class Mori::InvitesController < Mori::BaseController
   end
 
   def accept
-    valid, message = @config.user_model.accept_invitation(@token, user_params[:password], user_params[:password_confirmation])
-    flash[:notice] = message
-    if valid
+    user = @config.user_model.find_by_invitation_token(@token)
+    if invitation_conditions(user)
+      user.accept_invitation(user_params[:password])
       warden.authenticate!
-      redirect_to @config.dashboard_path
+      redirect_to @config.dashboard_path, :notice => I18n.t('flashes.logged_in')
     else
+      flash[:notice] = I18n.t('flashes.invalid_invitation_token')
       redirect_to invite_path(@token)
     end
   end
@@ -34,4 +35,5 @@ class Mori::InvitesController < Mori::BaseController
       render :template => 'invites/new'
     end
   end
+
 end

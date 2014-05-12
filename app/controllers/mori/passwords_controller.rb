@@ -26,33 +26,39 @@ class Mori::PasswordsController < Mori::BaseController
 
   def send_reset
     # Send Password Reset to User
-    if !@config.user_model.forgot_password(params[:email])
-      render :template => 'passwords/forgot'
-    else
+    if user = @config.user_model.find_by_normalized_email(params[:email])
+      user.forgot_password
       render :template => 'passwords/send_reset'
+    else
+      render :template => 'passwords/forgot'
     end
   end
 
   def update
     # Update their password
-    valid, message = current_user.change_password(params[:password], params[:new_password], params[:new_password_confirmation])
-    if valid
+    if password_change_conditions
+      current_user.change_password(params[:new_password])
       flash[:notice] = t('flashes.password_changed_successfully')
       redirect_to @config.dashboard_path
     else
-      flash[:notice] = message
+      flash[:notice] = I18n.t('flashes.password_change_failed')
       render :template => 'passwords/change'
     end
   end
 
   def reset_password
-    valid, message = @config.user_model.reset_password(@token, user_params[:password], user_params[:password_confirmation])
-    flash[:notice] = message
-    if valid
+    user = @config.user_model.find_by_password_reset_token @token
+    if user.nil? or @token != user.password_reset_token or user.password_reset_sent < expiration_date
+      flash[:notice] = t('flashes.invalid_password_reset_token')
+      redirect_to "/passwords/reset?token=#{@token}"
+    else
+      user.reset_password(params[:new_password])
       warden.authenticate!
       redirect_to @config.dashboard_path
-    else
-      redirect_to "/passwords/reset?token=#{@token}"
     end
+  end
+
+  def password_change_conditions
+    current_user.authenticate(params[:password]) && params[:new_password] == params[:new_password_confirmation]
   end
 end

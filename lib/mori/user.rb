@@ -16,36 +16,11 @@ module Mori
     module ClassMethods
 
       def find_by_normalized_email(email)
-        find_by_email normalize_email(email)
+        find_by_email(normalize_email(email))
       end
 
       def normalize_email(string)
         string.gsub(/\s+/, '').downcase
-      end
-
-      def confirm_email(token)
-        user = find_by_confirmation_token(token)
-        return false, 'Invalid Confirmation Token' if user.blank?
-        return false, 'Expired Confirmation Token' if user.confirmation_sent < Date.today - Mori.configuration.token_expiration.days
-        user.confirmed = true
-        return true, 'Email Confirmed' if user.save
-      end
-
-      def accept_invitation(token, password, password_confirmation)
-        user = find_by_invitation_token(token)
-        return false, I18n.t('flashes.passwords_dont_match') if password != password_confirmation
-        return false, 'Expired Invitation Token' if user.invitation_sent < Date.today - Mori.configuration.token_expiration.days
-        user.password = password
-        return true, I18n.t('flashes.logged_in') if user.save
-      end
-
-      def reset_password(token, new_password, confirmation)
-        user = find_by_password_reset_token token
-        return false, 'Passwords do not match' if new_password != confirmation
-        return false, 'Invalid Password Reset Token' unless token == user.password_reset_token
-        return false, 'Expired Reset Token' if user.password_reset_sent < Date.today - Mori.configuration.token_expiration.days
-        user.password = new_password
-        user.save
       end
 
       def invite(email)
@@ -61,14 +36,6 @@ module Mori
         end
       end
 
-      def forgot_password(email)
-        user = find_by_normalized_email(email)
-        return false if user.blank?
-        user.password_reset_token = Token.new
-        user.password_reset_sent = Date.today
-        MoriMailer.forgot_password(user)
-        user.save
-      end
     end
 
     module Callbacks
@@ -91,15 +58,32 @@ module Mori
       end
     end
 
-    def change_password(password, new_password, confirm)
-      if ::BCrypt::Password.new(self.password) != password
-        return false, I18n.t('flashes.password_change_failed')
-      elsif new_password != confirm
-        return false, I18n.t('flashes.passwords_did_not_match')
-      else
-        self.password = new_password
-        save
-      end
+    def accept_invitation(password)
+      self.password = password
+      self.confirmed = true
+      self.save
+    end
+
+    def change_password(new_password)
+      self.password = new_password
+      save
+    end
+
+    def forgot_password
+      self.password_reset_token = Token.new
+      self.password_reset_sent = Date.today
+      MoriMailer.forgot_password(self)
+      save
+    end
+
+    def confirm_email
+      self.confirmed = true
+      self.save
+    end
+
+    def reset_password(new_password)
+      self.password = new_password
+      self.save
     end
 
     def authenticate(password)
