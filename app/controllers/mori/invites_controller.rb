@@ -36,4 +36,7 @@ class Mori::InvitesController < Mori::BaseController
     end
   end
 
+  def invitation_conditions(user)
+    user.invitation_sent > Mori::Token.expiration_date
+  end
 end

@@ -49,6 +49,10 @@ class Mori::RegistrationsController < Mori::BaseController
   end
 
   def confirmation_conditions(user)
-    !user.nil? and user.confirmation_sent > expiration_date
+    begin
+      user.confirmation_sent > Mori::Token.expiration_date
+    rescue
+      return false
+    end
   end
 end

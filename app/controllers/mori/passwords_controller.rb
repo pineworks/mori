@@ -48,7 +48,7 @@ class Mori::PasswordsController < Mori::BaseController
 
   def reset_password
     user = @config.user_model.find_by_password_reset_token @token
-    if user.nil? or @token != user.password_reset_token or user.password_reset_sent < expiration_date
+    if @token != user.password_reset_token or user.password_reset_sent < Mori::Token.expiration_date
       flash[:notice] = t('flashes.invalid_password_reset_token')
       redirect_to "/passwords/reset?token=#{@token}"
     else
