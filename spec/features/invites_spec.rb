@@ -38,20 +38,8 @@ describe 'Inviting Users', :type => :feature do
       visit '/invites/asd234fdsasd234'
       page.current_path.should eq root_path
     end
-    it 'should redirect to the invites path if validation fails' do
-      visit "/invites/#{@user.invitation_token}"
-      User.should_receive(:accept_invitation).exactly(1).times.and_call_original
-      within(:css, '.edit_user') do
-        fill_in 'Password', :with => 'passwoasdfasdfasdasdf'
-        fill_in 'Password confirmation', :with => 'password123'
-      end
-      click_button 'Accept'
-      page.current_path.should eq "/invites/#{@user.invitation_token}"
-      page.has_content?(I18n.t('flashes.passwords_dont_match')).should eq true
-    end
     it 'should accept the invite and log the new user in' do
       visit "/invites/#{@user.invitation_token}"
-      User.should_receive(:accept_invitation).exactly(1).times.and_call_original
       within(:css, '.edit_user') do
         fill_in 'Password', :with => 'password123'
         fill_in 'Password confirmation', :with => 'password123'
@@ -59,6 +47,8 @@ describe 'Inviting Users', :type => :feature do
       click_button 'Accept'
       page.current_path.should eq Mori.configuration.dashboard_path
       page.has_content?(I18n.t('flashes.logged_in')).should be true
+      ::BCrypt::Password.new(@user.reload.password).should eq 'password123'
+      @user.confirmed.should eq true
     end
   end
 end

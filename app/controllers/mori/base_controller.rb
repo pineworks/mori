@@ -8,8 +8,9 @@ class Mori::BaseController < ApplicationController
     @config = Mori.configuration
   end
   def set_token
-    if params[:token] or params[:user]
-      @token = params[:token] || params[:user][:token]
+    token, user = params[:token], params[:user]
+    if token or user
+      @token = token || user[:token]
     end
   end
 end

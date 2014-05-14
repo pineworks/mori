@@ -5,7 +5,7 @@ class Mori::SessionsController < Mori::BaseController
       redirect_to @config.dashboard_path
     else
       @user = @config.user_model.new
-      flash.now.alert = warden.message if warden.message.present?
+      flash.now.alert = warden.message
       render :template => 'sessions/new'
     end
   end

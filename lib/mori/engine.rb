@@ -1,4 +1,5 @@
 module Mori
+  # Mori::Engine configuration file
   class Engine < ::Rails::Engine
     config.generators do |gen|
       gen.test_framework :rspec, :fixture => false

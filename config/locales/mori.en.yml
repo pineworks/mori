@@ -4,6 +4,7 @@ en:
     password_change_failed: We were unable to reset your password. Please try again
     password_changed_sucessfully: Your password has been updated
     password_has_been_reset: Your password has been reset
+    invalid_password_reset_token: Password Reset Token is Invalid, please try resetting your password again
     could_not_invite_user: Could not invite user
     accepted_invitation_message: You have accepted the invitation, welcome magical user
     logged_in: You have logged in

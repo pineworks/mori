@@ -1,5 +1,5 @@
-# Mori Configuration is for setting application wide settings
 module Mori
+  # Mori Configuration is for setting application wide settings
   class Configuration
     attr_accessor \
       :from_email,

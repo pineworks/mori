@@ -19,7 +19,8 @@ module Mori
     end
 
     def user_params
-      params[:user] if params[:user].present?
+      user = params[:user]
+      user if user.present?
     end
   end
 end
