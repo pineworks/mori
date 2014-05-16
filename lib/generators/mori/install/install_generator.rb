@@ -39,6 +39,10 @@ module Mori
         end
       end
 
+      def display_readme_in_terminal
+        readme 'README'
+      end
+
       private
 
       def users_table?
