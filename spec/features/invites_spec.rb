@@ -38,6 +38,18 @@ describe 'Inviting Users', :type => :feature do
       visit '/invites/asd234fdsasd234'
       page.current_path.should eq root_path
     end
+    it 'should reject old tokens' do
+      Timecop.freeze(Date.today + 3.weeks) do
+        visit "/invites/#{@user.invitation_token}"
+        within(:css, '.edit_user') do
+          fill_in 'Password', :with => 'password123'
+          fill_in 'Password confirmation', :with => 'password123'
+        end
+        click_button 'Accept'
+        page.current_path.should eq "/invites/#{@user.invitation_token}"
+        page.has_content?(I18n.t('flashes.invalid_invitation_token'))
+      end
+    end
     it 'should accept the invite and log the new user in' do
       visit "/invites/#{@user.invitation_token}"
       within(:css, '.edit_user') do

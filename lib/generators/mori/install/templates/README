@@ -1,0 +1,31 @@
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Mori Next steps:
+
+1. Configure the mailer to create full URLs in emails:
+
+    # config/environments/{development,test}.rb
+    config.action_mailer.default_url_options = { host: 'localhost:3000' }
+
+    In production it should be your app's domain name.
+
+2. Display session info and flashes. For example, in your application layout:
+
+    <% if signed_in? %>
+      Signed in as: <%= current_user.email %>
+      <%= mori_logout_link %>
+    <% else %>
+      <%= link_to 'Sign in', sign_in_path %>
+    <% end %>
+
+    <div id="flash">
+      <% flash.each do |key, value| %>
+        <div class="flash <%= key %>"><%= value %></div>
+      <% end %>
+    </div>
+
+3. Migrate the database:
+
+    rake db:migrate
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
