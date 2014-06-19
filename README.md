@@ -7,7 +7,7 @@
 
 Mori is a lightweight Rails Engine built to handle authentication.
 
-Mori was built with the intention of being easy to overwrite, and easy to implement.
+Mori was built with the intention of being easy to override, and easy to implement.
 
 ## Installing
 
@@ -29,7 +29,7 @@ rails g mori:install
 ```
 
 The generator does the following:
-  - Inserts Mori::User in your User model
+  - Inserts Mori::User in your User model (or creates the User Model)
   - Inserts Mori::Controller in your ApplicationController
   - Creates a migration to add missing collumns, or create a new table.
 
