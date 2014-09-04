@@ -1,4 +1,4 @@
-Rails.application.config.middleware.insert_after ActionDispatch::Flash, Warden::Manager do |manager|
+Rails.application.config.middleware.use do |manager|
   manager.default_strategies :password
   manager.failure_app = Mori::SessionsController.action(:new)
 end
