@@ -2,6 +2,10 @@ module Mori
   module Controller
     extend ActiveSupport::Concern
 
+    included do
+      helper_method :current_user, :signed_in?
+    end
+
     def authenticate!
       warden.authenticate!
     end
