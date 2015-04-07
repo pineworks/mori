@@ -11,7 +11,7 @@ module Mori
     end
 
     def signed_in?
-      current_user.preset?
+      current_user.present?
     end
 
     def current_user
